@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics | AI Network Monitoring</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/analytics.css" />
+  <link rel="icon" type="image/png" href="/static/logo.png">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+
+      <!-- ✅ LOGO ADDED -->
+      <div class="logo-container">
+        <img src="/static/logo.png" alt="NetObserv Logo" class="logo">
+        <div class="logo-text">
+            <h2>NetObserv</h2>
+            <p>Network Monitor</p>
+        </div>
+      </div>
+
+      <!-- ✅ NAV ORDER FIXED -->
+      <nav class="nav">
+        <a class="nav-link" href="/">Dashboard</a>
+        <a class="nav-link" href="/static/devices.html">Devices</a>
+        <a class="nav-link" href="/static/topology.html">Topology</a>
+        <a class="nav-link active" href="/static/analytics.html">Analytics</a>
+        <a class="nav-link" href="/static/predict.html">Prediction</a>
+        <a class="nav-link" href="/static/self-healing.html">Self-Healing</a>
+      </nav>
+
+      <div class="sidebar-card">
+        <h3>API Health</h3>
+        <div id="healthStatus" class="status-badge neutral">Checking...</div>
+        <p id="healthTime" class="muted">Waiting for backend</p>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Last Refresh</h3>
+        <p id="lastUpdated" class="muted">--</p>
+      </div>
+    </aside>
+
+    <!-- ✅ EVERYTHING BELOW UNTOUCHED -->
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Live Network Insights</p>
+          <h2>Analytics Overview</h2>
+        </div>
+
+        <div class="topbar-actions">
+          <select id="sortSelect" class="control-input">
+            <option value="risk">Sort by Risk</option>
+            <option value="failure">Sort by Failure Probability</option>
+            <option value="anomaly">Sort by Anomaly Score</option>
+            <option value="latency">Sort by Latency</option>
+          </select>
+          <button id="refreshBtn" class="btn-primary">Refresh</button>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <p class="stat-label">Average Failure Probability</p>
+          <h3 id="avgFailure">0%</h3>
+          <span class="stat-foot">From live stream</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Average Anomaly Score</p>
+          <h3 id="avgAnomaly">0%</h3>
+          <span class="stat-foot">Isolation-based signal</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Average Latency</p>
+          <h3 id="avgLatency">0 ms</h3>
+          <span class="stat-foot">Across all devices</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">High/Critical Devices</p>
+          <h3 id="highCriticalCount">0</h3>
+          <span class="stat-foot">Needs attention</span>
+        </div>
+      </section>
+
+      <section class="charts-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Risk Distribution</h3>
+              <p>Count by risk level</p>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="riskDistributionChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Failure Probability</h3>
+              <p>Top devices by failure probability</p>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="failureProbabilityChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel panel-wide">
+          <div class="panel-header">
+            <div>
+              <h3>Latency vs Packet Loss</h3>
+              <p>Operational behavior by device</p>
+            </div>
+          </div>
+          <div class="chart-wrap wide">
+            <canvas id="latencyPacketLossChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel panel-wide">
+          <div class="panel-header">
+            <div>
+              <h3>Anomaly, Risk and Bandwidth</h3>
+              <p>Top devices across core metrics</p>
+            </div>
+          </div>
+          <div class="chart-wrap wide">
+            <canvas id="multiMetricChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>AI Insights</h3>
+              <p>Quick interpretation from current stream</p>
+            </div>
+          </div>
+          <div id="insightsList" class="insights-list">
+            <div class="empty-text">Loading insights...</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Top Risky Devices</h3>
+              <p>Current stream ranking</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Device</th>
+                  <th>Risk</th>
+                  <th>Failure</th>
+                  <th>Anomaly</th>
+                </tr>
+              </thead>
+              <tbody id="topDevicesTable">
+                <tr>
+                  <td colspan="4" class="empty-cell">Loading data...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/static/analytics.js"></script>
+</body>
+</html>

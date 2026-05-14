@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devices | AI Network Monitoring</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/devices.css" />
+  <link rel="icon" type="image/png" href="/static/logo.png">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+
+
+      <!-- ✅ UPDATED LOGO SECTION (REPLACED BRAND) -->
+      <div class="logo-container">
+        <img src="/static/logo.png" alt="NetObserv Logo" class="logo">
+        <div class="logo-text">
+            <h2>NetObserv</h2>
+            <p>Network Monitor</p>
+        </div>
+      </div>
+
+      <!-- ✅ FIXED NAV ORDER -->
+      <nav class="nav">
+        <a class="nav-link" href="/">Dashboard</a>
+        <a class="nav-link active" href="/static/devices.html">Devices</a>
+        <a class="nav-link" href="/static/topology.html">Topology</a>
+        <a class="nav-link" href="/static/analytics.html">Analytics</a>
+        <a class="nav-link" href="/static/predict.html">Prediction</a>
+        <a class="nav-link" href="/static/self-healing.html">Self-Healing</a>
+      </nav>
+
+      <div class="sidebar-card">
+        <h3>API Health</h3>
+        <div id="healthStatus" class="status-badge neutral">Checking...</div>
+        <p id="healthTime" class="muted">Waiting for backend</p>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Devices Count</h3>
+        <p id="deviceCountSide" class="big-number">0</p>
+      </div>
+    </aside>
+
+    <!-- ✅ REST CODE EXACTLY SAME -->
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Network Inventory</p>
+          <h2>All Devices</h2>
+        </div>
+        <div class="topbar-actions">
+          <input id="searchInput" class="search-input" type="text" placeholder="Search by device name..." />
+          <button id="refreshBtn" class="btn-primary">Refresh</button>
+        </div>
+      </header>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <p class="stat-label">Total Devices</p>
+          <h3 id="totalDevices">0</h3>
+          <span class="stat-foot">From /devices API</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Routers</p>
+          <h3 id="routerCount">0</h3>
+          <span class="stat-foot">Names starting with Router</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Switches</p>
+          <h3 id="switchCount">0</h3>
+          <span class="stat-foot">Names starting with Switch</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Servers</p>
+          <h3 id="serverCount">0</h3>
+          <span class="stat-foot">Names starting with Server</span>
+        </div>
+      </section>
+
+      <section class="devices-layout">
+        <div class="panel panel-large">
+          <div class="panel-header">
+            <div>
+              <h3>Device List</h3>
+              <p>Available network nodes from backend</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Device Name</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="deviceTableBody">
+                <tr>
+                  <td colspan="4" class="empty-cell">Loading devices...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Device Types</h3>
+              <p>Quick summary</p>
+            </div>
+          </div>
+
+          <div class="summary-list">
+            <div class="summary-item">
+              <span>Router Devices</span>
+              <strong id="routerCountSide">0</strong>
+            </div>
+            <div class="summary-item">
+              <span>Switch Devices</span>
+              <strong id="switchCountSide">0</strong>
+            </div>
+            <div class="summary-item">
+              <span>Server Devices</span>
+              <strong id="serverCountSide">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Tips</h3>
+              <p>Page usage</p>
+            </div>
+          </div>
+
+          <div class="tips-box">
+            <p>Use this page for a clean inventory view of all devices currently configured in the backend.</p>
+            <p>Use Dashboard for live risk and health, and Analytics for charts and trends.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/devices.js"></script>
+</body>
+</html>
