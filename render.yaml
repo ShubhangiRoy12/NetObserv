@@ -1,14 +1,6 @@
-<<<<<<< HEAD
 services:
   - type: web
     name: netobserv
     env: python
     buildCommand: pip install -r requirements.txt
-=======
-services:
-  - type: web
-    name: netobserv
-    env: python
-    buildCommand: pip install -r requirements.txt
->>>>>>> 29145c1d3f19ab501e3bd754b1c5750b570409f8
     startCommand: uvicorn app:app --host 0.0.0.0 --port 10000
