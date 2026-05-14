@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *{
     margin:0;
     padding:0;
@@ -147,4 +148,155 @@ body{
         width:100%;
     }
 
+=======
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    background:#020817;
+    color:white;
+    height:100vh;
+}
+
+.auth-container{
+    display:flex;
+    height:100vh;
+}
+
+.auth-left{
+    flex:1;
+    padding:60px;
+    background:linear-gradient(
+        135deg,
+        #020617,
+        #071a3a,
+        #0f172a
+    );
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.brand h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.brand p{
+    color:#94a3b8;
+}
+
+.brand-logo{
+    width:120px;
+    height:120px;
+    object-fit:contain;
+    margin-bottom:15px;
+}
+
+.hero-text{
+    margin-top:80px;
+}
+
+.hero-text h2{
+    font-size:52px;
+    line-height:1.1;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    color:#94a3b8;
+    max-width:500px;
+    line-height:1.7;
+}
+
+.auth-right{
+    width:480px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+}
+
+.auth-card{
+    width:100%;
+    background:#0f172a;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px;
+    padding:40px;
+}
+
+.auth-card h2{
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.sub{
+    color:#94a3b8;
+    margin-bottom:35px;
+}
+
+.input-group{
+    margin-bottom:24px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.input-group input{
+    width:100%;
+    padding:16px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    background:#1e293b;
+    color:white;
+    font-size:15px;
+}
+
+.btn-primary{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#3b82f6;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+}
+
+.switch-page{
+    margin-top:25px;
+    text-align:center;
+    color:#94a3b8;
+}
+
+.switch-page a{
+    color:#3b82f6;
+    text-decoration:none;
+}
+
+@media(max-width:900px){
+
+    .auth-left{
+        display:none;
+    }
+
+    .auth-right{
+        width:100%;
+    }
+
+>>>>>>> 29145c1d3f19ab501e3bd754b1c5750b570409f8
 }

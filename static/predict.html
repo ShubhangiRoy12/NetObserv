@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -254,4 +255,262 @@
   <script src="/static/predict.js"></script>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Prediction | AI Network Monitoring</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/predict.css" />
+  <link rel="icon" type="image/png" href="/static/logo.png">
+
+  <!-- ✅ REQUIRED FOR GRAPH -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- ✅ SIDEBAR FIXED -->
+    <aside class="sidebar">
+
+      <div class="logo-container">
+        <img src="/static/logo.png" class="logo">
+        <div class="logo-text">
+          <h2>NetObserv</h2>
+          <p>Network Monitor</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-link" href="/">Dashboard</a>
+        <a class="nav-link" href="/static/devices.html">Devices</a>
+        <a class="nav-link" href="/static/topology.html">Topology</a>
+        <a class="nav-link" href="/static/analytics.html">Analytics</a>
+        <a class="nav-link active" href="/static/predict.html">Prediction</a>
+        <a class="nav-link" href="/static/self-healing.html">Self-Healing</a>
+      </nav>
+
+      <div class="sidebar-card">
+        <h3>Prediction API</h3>
+        <div id="apiStatusBadge" class="status-badge neutral">Checking...</div>
+        <p id="apiStatusText" class="muted">Waiting for backend</p>
+      </div>
+
+    </aside>
+
+    <!-- ✅ MAIN -->
+    <main class="main-content">
+
+      <header class="page-head">
+        <p class="eyebrow">Manual Fault Inference</p>
+        <h2>Prediction Workspace</h2>
+      </header>
+
+      <!-- ✅ FIXED CLASS NAME -->
+      <section class="predict-layout">
+
+        <!-- LEFT -->
+        <div class="left-column">
+
+          <div class="panel">
+            <div class="section-head">
+              <h3>Telemetry Input</h3>
+              <p>Enter feature values and submit to the prediction model</p>
+            </div>
+
+            <!-- ✅ FIXED FORM ID -->
+            <form id="predictionForm" class="predict-form">
+
+              <div class="field full">
+                <label>Device ID</label>
+                <input id="device_id" type="text" placeholder="Router-1">
+              </div>
+
+              <div class="field">
+                <label>dur</label>
+                <input id="dur" type="number">
+              </div>
+
+              <div class="field">
+                <label>sbytes</label>
+                <input id="sbytes" type="number">
+              </div>
+
+              <div class="field">
+                <label>dbytes</label>
+                <input id="dbytes" type="number">
+              </div>
+
+              <div class="field">
+                <label>sload</label>
+                <input id="sload" type="number">
+              </div>
+
+              <div class="field">
+                <label>dload</label>
+                <input id="dload" type="number">
+              </div>
+
+              <div class="field">
+                <label>spkts</label>
+                <input id="spkts" type="number">
+              </div>
+
+              <div class="field">
+                <label>dpkts</label>
+                <input id="dpkts" type="number">
+              </div>
+
+              <div class="field">
+                <label>sinpkt</label>
+                <input id="sinpkt" type="number">
+              </div>
+
+              <div class="field">
+                <label>dinpkt</label>
+                <input id="dinpkt" type="number">
+              </div>
+
+              <div class="field">
+                <label>sjit</label>
+                <input id="sjit" type="number">
+              </div>
+
+              <div class="field">
+                <label>djit</label>
+                <input id="djit" type="number">
+              </div>
+
+              <div class="field">
+                <label>smean</label>
+                <input id="smean" type="number">
+              </div>
+
+              <div class="field">
+                <label>dmean</label>
+                <input id="dmean" type="number">
+              </div>
+
+              <!-- ✅ SINGLE BUTTON SECTION -->
+              <div class="form-actions">
+                <button type="submit" class="btn-primary">Run Prediction</button>
+                <button type="button" id="sampleBtn" class="btn-secondary">Sample</button>
+                <button type="button" id="normalBtn" class="btn-secondary">Normal</button>
+                <button type="button" id="riskyBtn" class="btn-secondary">Risky</button>
+                <button type="reset" id="resetBtn" class="btn-ghost">Reset</button>
+              </div>
+
+            </form>
+          </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right-column">
+
+          <!-- RESULT -->
+          <div class="panel">
+
+            <div class="section-head">
+              <h3>Prediction Result</h3>
+              <p>Live response from model</p>
+            </div>
+
+            <div class="hero-result">
+
+              <div class="hero-top">
+                <span id="riskBadge" class="status-badge neutral">Awaiting Input</span>
+              </div>
+
+              <span class="metric-label">Risk Score</span>
+              <h2 id="riskScoreValue">0%</h2>
+
+              <div class="progress-track">
+                <div id="riskProgressBar" class="progress-fill neutral-fill"></div>
+              </div>
+            </div>
+
+            <div class="result-grid">
+              <div class="mini-card">
+                <span class="mini-label">Failure Probability</span>
+                <strong id="failureProbabilityValue">0%</strong>
+              </div>
+
+              <div class="mini-card">
+                <span class="mini-label">XGB Probability</span>
+                <strong id="xgbProbabilityValue">0%</strong>
+              </div>
+
+              <div class="mini-card">
+                <span class="mini-label">Anomaly Score</span>
+                <strong id="anomalyScoreValue">0%</strong>
+              </div>
+
+              <div class="mini-card">
+                <span class="mini-label">Anomaly Flag</span>
+                <strong id="anomalyFlagValue">--</strong>
+              </div>
+            </div>
+
+            <div class="meta-grid">
+              <div class="meta-card">
+                <span class="mini-label">Device</span>
+                <strong id="resultDevice">--</strong>
+              </div>
+
+              <div class="meta-card">
+                <span class="mini-label">Timestamp</span>
+                <strong id="resultTimestamp">--</strong>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ✅ NEW GRAPH PANEL -->
+          <div class="panel">
+            <div class="section-head">
+              <h3>Prediction Analysis</h3>
+              <p>Visual breakdown of model output</p>
+            </div>
+
+            <div class="chart-wrap">
+              <canvas id="predictionChart"></canvas>
+            </div>
+          </div>
+
+          <!-- RECOMMENDATION -->
+          <div class="panel">
+            <div class="section-head">
+              <h3>Recommendation</h3>
+            </div>
+
+            <p id="recommendationText" class="body-copy">
+              The model recommendation will appear here after running a prediction.
+            </p>
+
+            <ul class="insight-list">
+              <li id="insightLine1">Risk score combines anomaly and failure indicators.</li>
+              <li id="insightLine2">Higher values indicate stronger fault likelihood.</li>
+              <li id="insightLine3">Use the recommendation to guide next action.</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/static/predict.js"></script>
+
+</body>
+>>>>>>> 29145c1d3f19ab501e3bd754b1c5750b570409f8
 </html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -202,3 +203,209 @@
   <script src="/static/script.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Network Monitoring Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+
+      <!-- ✅ UPDATED LOGO SECTION (REPLACED BRAND) -->
+      <div class="logo-container">
+        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
+        <div class="logo-text">
+            <h2>NetObserv</h2>
+            <p>Network Monitor</p>
+        </div>
+      </div>
+
+    <nav class="nav">
+      <a class="nav-link active" href="/">Dashboard</a>
+
+      <a class="nav-link" href="/static/devices.html">Devices</a>
+      <a class="nav-link" href="/static/topology.html">Topology</a>
+
+      <a class="nav-link" href="/static/analytics.html">Analytics</a>
+      <a class="nav-link" href="/static/predict.html">Prediction</a>
+
+      <a class="nav-link" href="/static/self-healing.html">Self-Healing</a>
+    </nav>
+
+      <!-- ❌ REMOVED DUPLICATE LOGO HERE -->
+
+      <div class="sidebar-card">
+        <h3>API Health</h3>
+        <div id="healthStatus" class="status-badge neutral">Checking...</div>
+        <p id="healthTime" class="muted">Waiting for backend</p>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Last Refresh</h3>
+        <p id="lastUpdated" class="muted">--</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">AI-Driven Network Fault Prediction</p>
+          <h2>Dashboard Overview</h2>
+        </div>
+        <button id="refreshBtn" class="btn-primary">Refresh Now</button>
+      </header>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <p class="stat-label">Total Devices</p>
+          <h3 id="totalDevices">0</h3>
+          <span class="stat-foot">Live from stream API</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Critical Devices</p>
+          <h3 id="criticalDevices">0</h3>
+          <span class="stat-foot danger-text">Needs immediate action</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Average Risk Score</p>
+          <h3 id="avgRisk">0%</h3>
+          <span class="stat-foot">Across all devices</span>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Average Packet Loss</p>
+          <h3 id="avgPacketLoss">0%</h3>
+          <span class="stat-foot warning-text">Derived from stream data</span>
+        </div>
+      </section>
+
+      <section class="charts-grid">
+        <div class="panel chart-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Risk Distribution</h3>
+              <p>Current device count by risk level</p>
+            </div>
+          </div>
+          <div class="chart-box">
+            <canvas id="riskChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel chart-panel">
+          <div class="panel-header">
+            <div>
+              <h3>Top Failure Probability</h3>
+              <p>Most risky devices right now</p>
+            </div>
+          </div>
+          <div class="chart-box">
+            <canvas id="failureChart"></canvas>
+          </div>
+        </div>
+
+        <div class="panel chart-panel chart-panel-wide">
+          <div class="panel-header">
+            <div>
+              <h3>Top Anomaly Scores</h3>
+              <p>Highest anomaly signals in current stream</p>
+            </div>
+          </div>
+          <div class="chart-box chart-box-wide">
+            <canvas id="anomalyChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="panel panel-large">
+          <div class="panel-header">
+            <div>
+              <h3>Live Device Status</h3>
+              <p>Auto-refresh every 5 seconds</p>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Device</th>
+                  <th>Risk Level</th>
+                  <th>Risk Score</th>
+                  <th>Failure Probability</th>
+                  <th>Anomaly Score</th>
+                  <th>Latency</th>
+                  <th>Packet Loss</th>
+                  <th>Bandwidth</th>
+                </tr>
+              </thead>
+              <tbody id="deviceTableBody">
+                <tr>
+                  <td colspan="8" class="empty-cell">Loading device data...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Critical Alerts</h3>
+              <p>High risk recommendations</p>
+            </div>
+          </div>
+          <div id="alertList" class="alert-list">
+            <div class="empty-alert">No alerts yet.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Risk Breakdown</h3>
+              <p>Current device counts</p>
+            </div>
+          </div>
+          <div class="risk-list">
+            <div class="risk-row">
+              <span>Low</span>
+              <strong id="lowCount">0</strong>
+            </div>
+            <div class="risk-row">
+              <span>Medium</span>
+              <strong id="mediumCount">0</strong>
+            </div>
+            <div class="risk-row">
+              <span>High</span>
+              <strong id="highCount">0</strong>
+            </div>
+            <div class="risk-row">
+              <span>Critical</span>
+              <strong id="criticalCount">0</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/static/script.js"></script>
+</body>
+</html>
+>>>>>>> 29145c1d3f19ab501e3bd754b1c5750b570409f8
