@@ -1,13 +1,9 @@
 fastapi
 uvicorn
-jinja2
-python-multipart
-numpy
 pandas
+numpy
 scikit-learn
 xgboost
-<<<<<<< HEAD
 joblib
-=======
-joblib
->>>>>>> 29145c1d3f19ab501e3bd754b1c5750b570409f8
+jinja2
+python-multipart
