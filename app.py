@@ -413,7 +413,9 @@ def predict(record: TelemetryRecord):
             "dmean": record.dmean
         }
         return model_predict(raw, record.device_id)
+
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
