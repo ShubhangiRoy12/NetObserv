@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const API_BASE = "";
 
 const healthStatusEl = document.getElementById("healthStatus");
@@ -402,7 +401,7 @@ if (sortSelect) {
 }
 
 loadAnalyticsPage();
-=======
+
 const API_BASE = "";
 
 const healthStatusEl = document.getElementById("healthStatus");
@@ -806,5 +805,4 @@ if (sortSelect) {
 }
 
 loadAnalyticsPage();
->>>>>>> 29145c1d3f19ab501e3bd754b1c5750b570409f8
 setInterval(loadAnalyticsPage, 5000);
