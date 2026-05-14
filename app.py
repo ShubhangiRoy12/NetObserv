@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -415,7 +414,7 @@ def predict(record: TelemetryRecord):
         }
         return model_predict(raw, record.device_id)
     except Exception as e:
-=======
+
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
@@ -821,5 +820,4 @@ def predict(record: TelemetryRecord):
         }
         return model_predict(raw, record.device_id)
     except Exception as e:
->>>>>>> 29145c1d3f19ab501e3bd754b1c5750b570409f8
         raise HTTPException(status_code=500, detail=str(e))
