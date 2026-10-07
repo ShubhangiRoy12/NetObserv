@@ -48,11 +48,11 @@ function destroyCharts() {
 }
 
 function chartTextColor() {
-  return "#c8d4f0";
+  return "#64748b";
 }
 
 function chartGridColor() {
-  return "rgba(255,255,255,0.08)";
+  return "rgba(148, 163, 184, 0.22)";
 }
 
 function getSortedDevices(devices, mode) {
@@ -352,11 +352,11 @@ async function fetchHealth() {
     const data = await res.json();
 
     healthStatusEl.textContent = data.status;
-    healthStatusEl.className = "status-badge low";
+    healthStatusEl.className = "status-pill low";
     healthTimeEl.textContent = `Updated: ${formatDateTime(data.timestamp)}`;
   } catch (error) {
     healthStatusEl.textContent = "offline";
-    healthStatusEl.className = "status-badge critical";
+    healthStatusEl.className = "status-pill critical";
     healthTimeEl.textContent = "Backend not reachable";
   }
 }

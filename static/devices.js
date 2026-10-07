@@ -35,43 +35,77 @@ function getDeviceType(deviceName) {
 }
 
 function getTypeClass(type) {
-  if (type === "Router") return "router";
-  if (type === "Switch") return "switch";
-  if (type === "Server") return "server";
+  if (type === "Router") return "type-router";
+  if (type === "Switch") return "type-switch";
+  if (type === "Server") return "type-server";
   return "neutral";
+}
+
+function getRiskClass(riskLevel) {
+  const risk = String(riskLevel || "LOW").toLowerCase();
+  if (risk === "critical") return "critical";
+  if (risk === "high") return "high";
+  if (risk === "medium") return "medium";
+  return "low";
+}
+
+function formatPercent(value) {
+  const number = Number(value || 0);
+  return `${(number * 100).toFixed(1)}%`;
+}
+
+function formatPacketLoss(value) {
+  const number = Number(value || 0);
+  return `${number.toFixed(2)}%`;
+}
+
+function formatLatency(value) {
+  const number = Number(value || 0);
+  return `${number.toFixed(0)} ms`;
+}
+
+function getRecommendation(device) {
+  if (device.risk_level === "CRITICAL") return "Reroute traffic or trigger failover";
+  if (device.risk_level === "HIGH") return "Inspect logs and isolate device";
+  if (device.risk_level === "MEDIUM") return "Watch closely and reduce load";
+  return "Normal monitoring";
 }
 
 function renderDevices(devices) {
   if (!devices.length) {
     deviceTableBody.innerHTML = `
       <tr>
-        <td colspan="4" class="empty-cell">No devices found.</td>
+        <td colspan="7" class="empty-cell">No devices found.</td>
       </tr>
     `;
     return;
   }
 
-  deviceTableBody.innerHTML = devices.map((device, index) => {
-    const type = getDeviceType(device);
+  deviceTableBody.innerHTML = devices.map((device) => {
+    const type = getDeviceType(device.device_id);
+    const riskClass = getRiskClass(device.risk_level);
 
     return `
       <tr>
-        <td>${index + 1}</td>
-        <td>${device}</td>
+        <td><strong>${device.device_id}</strong></td>
         <td><span class="type-badge ${getTypeClass(type)}">${type}</span></td>
-        <td><span class="status-badge success">Active</span></td>
+        <td><span class="status-pill ${riskClass}">${device.risk_level || "LOW"}</span></td>
+        <td>${formatPercent(device.failure_probability)}</td>
+        <td>${formatLatency(device.latency_ms)}</td>
+        <td>${formatPacketLoss(device.packet_loss)}</td>
+        <td>${getRecommendation(device)}</td>
       </tr>
     `;
   }).join("");
 }
 
 function updateCounts(devices) {
-  const routers = devices.filter(d => getDeviceType(d) === "Router").length;
-  const switches = devices.filter(d => getDeviceType(d) === "Switch").length;
-  const servers = devices.filter(d => getDeviceType(d) === "Server").length;
+  const routers = devices.filter(d => getDeviceType(d.device_id) === "Router").length;
+  const switches = devices.filter(d => getDeviceType(d.device_id) === "Switch").length;
+  const servers = devices.filter(d => getDeviceType(d.device_id) === "Server").length;
 
   totalDevicesEl.textContent = devices.length;
-  deviceCountSideEl.textContent = devices.length;
+  deviceCountSideEl.textContent = `${devices.length} devices`;
 
   routerCountEl.textContent = routers;
   switchCountEl.textContent = switches;
@@ -86,7 +120,7 @@ function filterDevices() {
   const query = searchInput.value.trim().toLowerCase();
 
   const filtered = allDevices.filter(device =>
-    device.toLowerCase().includes(query)
+    device.device_id.toLowerCase().includes(query)
   );
 
   renderDevices(filtered);
@@ -99,18 +133,18 @@ async function fetchHealth() {
     const data = await res.json();
 
     healthStatusEl.textContent = data.status;
-    healthStatusEl.className = "status-badge success";
+    healthStatusEl.className = "status-pill low";
     healthTimeEl.textContent = `Updated: ${formatDateTime(data.timestamp)}`;
   } catch (error) {
     healthStatusEl.textContent = "offline";
-    healthStatusEl.className = "status-badge neutral";
+    healthStatusEl.className = "status-pill critical";
     healthTimeEl.textContent = "Backend not reachable";
   }
 }
 
 async function fetchDevices() {
   try {
-    const res = await fetch(`${API_BASE}/devices`);
+    const res = await fetch(`${API_BASE}/stream`);
     const data = await res.json();
 
     allDevices = data.devices || [];
@@ -119,7 +153,7 @@ async function fetchDevices() {
   } catch (error) {
     deviceTableBody.innerHTML = `
       <tr>
-        <td colspan="4" class="empty-cell">Failed to load device list.</td>
+        <td colspan="7" class="empty-cell">Failed to load live device telemetry.</td>
       </tr>
     `;
   }

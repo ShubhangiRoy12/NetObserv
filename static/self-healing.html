@@ -4,88 +4,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Self-Healing Panel</title>
+  <title>Supervised Self-Healing</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- ✅ use correct css -->
   <link rel="stylesheet" href="/static/self-healing.css" />
-  <link rel="icon" type="image/png" href="/static/logo.png">
+  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
 </head>
 
 <body>
   <div class="app-shell">
 
-    <!-- ✅ UPDATED SIDEBAR ONLY -->
     <aside class="sidebar">
 
-      <div class="logo-container">
-        <img src="/static/logo.png" class="logo">
-        <div class="logo-text">
-          <h2>NetObserv</h2>
-          <p>Network Monitor</p>
+      <div class="brand-block">
+        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
+        <div>
+          <h1>NetObserv</h1>
+          <p>AIOps command center</p>
         </div>
       </div>
 
       <nav class="nav">
-        <a class="nav-link" href="/">Dashboard</a>
+        <a class="nav-link" href="/static/index.html">Dashboard</a>
         <a class="nav-link" href="/static/devices.html">Devices</a>
         <a class="nav-link" href="/static/topology.html">Topology</a>
         <a class="nav-link" href="/static/analytics.html">Analytics</a>
         <a class="nav-link" href="/static/predict.html">Prediction</a>
-        <a class="nav-link active" href="/static/self-healing.html">Self-Healing</a>
+        <a class="nav-link active" href="/static/self-healing.html">Supervised Healing</a>
       </nav>
 
-      <div class="sidebar-card">
-        <h3>Automation Status</h3>
-        <div id="automationBadge" class="status-badge low">Ready</div>
-        <p id="automationTime" class="muted">Waiting for update...</p>
+      <div class="side-panel">
+        <p class="panel-kicker">AUTOMATION</p>
+        <div class="side-row"><span>Status</span><strong id="automationBadge" class="status-pill low">Ready</strong></div>
+        <div class="side-row"><span>Mode</span><strong class="mini-value">Supervised</strong></div>
+        <p id="automationTime" class="side-note">Waiting for update...</p>
       </div>
 
-      <div class="sidebar-card">
-        <h3>Last Run</h3>
-        <p id="lastRun" class="muted">--</p>
+      <div class="side-panel">
+        <p class="panel-kicker">LAST RUN</p>
+        <p id="lastRun" class="side-note">--</p>
       </div>
 
     </aside>
 
-    <!-- ✅ MAIN CONTENT (UNCHANGED) -->
     <main class="main-content">
 
-      <header class="topbar">
+      <header class="hero-panel healing-hero">
         <div>
-          <p class="eyebrow">AIOps Core Feature</p>
-          <h2>Self-Healing Panel</h2>
-          <p class="muted">Automated recommendations based on live anomaly and failure risk.</p>
+          <p class="hero-kicker">AIOPS CORE FEATURE</p>
+          <h2>Supervised Self-Healing</h2>
+          <p>Human-in-the-loop remediation recommendations based on live anomaly and failure risk.</p>
         </div>
         <button id="refreshBtn" class="btn-primary">Refresh Actions</button>
       </header>
 
       <section class="stats-grid">
-        <div class="stat-card">
-          <p class="stat-label">Actionable Devices</p>
-          <h3 id="actionableCount">0</h3>
-          <span class="stat-foot">High and critical risk devices</span>
+        <div class="metric-card total">
+          <p>Actionable Devices</p>
+          <strong id="actionableCount">0</strong>
+          <span>High and critical risk devices</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Critical Cases</p>
-          <h3 id="criticalCount">0</h3>
-          <span class="stat-foot danger-text">Immediate attention</span>
+        <div class="metric-card critical">
+          <p>Critical Cases</p>
+          <strong id="criticalCount">0</strong>
+          <span>Immediate attention</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Executed Actions</p>
-          <h3 id="executedCount">0</h3>
-          <span class="stat-foot">Simulated remediation</span>
+        <div class="metric-card router">
+          <p>Tracked Alerts</p>
+          <strong id="executedCount">0</strong>
+          <span>Saved in browser storage</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Automation Mode</p>
-          <h3 id="automationModeText">Ready</h3>
-          <span class="stat-foot">Manual trigger enabled</span>
+        <div class="metric-card switch">
+          <p>Supervision Mode</p>
+          <strong id="automationModeText">Ready</strong>
+          <span>Human approval expected</span>
         </div>
       </section>
 
@@ -94,8 +92,8 @@
         <div class="panel panel-large">
           <div class="panel-header">
             <div>
-              <h3>Recommended Actions</h3>
-              <p>AI-generated remediation suggestions for risky devices</p>
+              <h3>Remediation Runbook</h3>
+              <p>AI-generated actions that an operator can review before execution</p>
             </div>
           </div>
 
@@ -107,13 +105,13 @@
         <div class="panel">
           <div class="panel-header">
             <div>
-              <h3>Execution Log</h3>
-              <p>Recent action history</p>
+              <h3>Alert Workflow</h3>
+              <p>Browser-stored status tracking for risky devices</p>
             </div>
           </div>
 
           <div id="executionLog" class="alert-list">
-            <div class="empty-alert">No actions executed yet.</div>
+            <div class="empty-alert">No alerts tracked yet.</div>
           </div>
         </div>
 
@@ -122,7 +120,6 @@
     </main>
   </div>
 
-  <!-- ✅ ORIGINAL SCRIPT RESTORED -->
   <script>
     const actionableCountEl = document.getElementById("actionableCount");
     const criticalCountEl = document.getElementById("criticalCount");
@@ -134,6 +131,7 @@
     const actionListEl = document.getElementById("actionList");
     const executionLogEl = document.getElementById("executionLog");
     const refreshBtn = document.getElementById("refreshBtn");
+    const ALERT_STORAGE_KEY = "netobserve_alerts_v1";
 
     function formatPercent(value) {
       return `${(Number(value) * 100).toFixed(1)}%`;
@@ -141,6 +139,10 @@
 
     function formatDateTime(isoString) {
       return new Date(isoString).toLocaleString();
+    }
+
+    function barWidth(value) {
+      return Math.max(0, Math.min(100, Number(value || 0) * 100)).toFixed(1);
     }
 
     function getRiskClass(level) {
@@ -152,30 +154,163 @@
       return "neutral";
     }
 
-    function renderActions(devices) {
-      if (!devices || !devices.length) {
-        actionListEl.innerHTML = `<div class="empty-alert">No remediation actions needed right now.</div>`;
-        executionLogEl.innerHTML = `<div class="empty-alert">No actions executed yet.</div>`;
+    function getStoredAlerts() {
+      try {
+        return JSON.parse(localStorage.getItem(ALERT_STORAGE_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveStoredAlerts(alerts) {
+      localStorage.setItem(ALERT_STORAGE_KEY, JSON.stringify(alerts));
+    }
+
+    function buildAlertId(device) {
+      return `${device.device_id}-${device.risk_level}`;
+    }
+
+    function syncAlerts(devices) {
+      const now = new Date().toISOString();
+      const alerts = getStoredAlerts();
+
+      devices.forEach(device => {
+        const alertId = buildAlertId(device);
+        const existing = alerts.find(alert => alert.id === alertId && alert.status !== "Resolved");
+
+        if (existing) {
+          existing.risk_level = device.risk_level;
+          existing.risk_score = device.risk_score;
+          existing.failure_probability = device.failure_probability;
+          existing.recommendation = device.recommendation;
+          existing.actions = device.actions || [];
+          existing.updated_at = now;
+          return;
+        }
+
+        alerts.unshift({
+          id: alertId,
+          device_id: device.device_id,
+          risk_level: device.risk_level,
+          risk_score: device.risk_score,
+          failure_probability: device.failure_probability,
+          recommendation: device.recommendation,
+          actions: device.actions || [],
+          status: "Open",
+          created_at: now,
+          updated_at: now
+        });
+      });
+
+      saveStoredAlerts(alerts.slice(0, 30));
+      return getStoredAlerts();
+    }
+
+    function setAlertStatus(alertId, status) {
+      const alerts = getStoredAlerts().map(alert => (
+        alert.id === alertId
+          ? { ...alert, status, updated_at: new Date().toISOString() }
+          : alert
+      ));
+      saveStoredAlerts(alerts);
+      renderAlerts(alerts);
+    }
+
+    function clearResolvedAlerts() {
+      const alerts = getStoredAlerts().filter(alert => alert.status !== "Resolved");
+      saveStoredAlerts(alerts);
+      renderAlerts(alerts);
+    }
+
+    function renderAlerts(alerts = getStoredAlerts()) {
+      executedCountEl.textContent = alerts.length;
+
+      if (!alerts.length) {
+        executionLogEl.innerHTML = `<div class="empty-alert">No browser-stored alerts yet.</div>`;
         return;
       }
 
-      actionListEl.innerHTML = devices.map(device => `
-        <div class="alert-item">
-          <h4>${device.device_id} - <span class="risk-badge ${getRiskClass(device.risk_level)}">${device.risk_level}</span></h4>
-          <p><strong>Recommendation:</strong> ${device.recommendation}</p>
-          <p><strong>Failure Probability:</strong> ${formatPercent(device.failure_probability)}</p>
-          <p><strong>Anomaly Score:</strong> ${formatPercent(device.anomaly_score)}</p>
-          <p><strong>Actions:</strong> ${device.actions.join(", ")}</p>
+      executionLogEl.innerHTML = `
+        <div class="alert-toolbar">
+          <span>${alerts.length} saved alert(s)</span>
+          <button type="button" id="clearResolvedBtn">Clear resolved</button>
         </div>
-      `).join("");
+        <div class="alert-timeline">
+          ${alerts.map(alert => `
+            <div class="alert-timeline-item ${getRiskClass(alert.risk_level)}">
+              <div class="timeline-dot"></div>
+              <div class="timeline-copy">
+                <div class="alert-workflow-head">
+                  <div>
+                    <strong>${alert.device_id}</strong>
+                    <span>${formatDateTime(alert.updated_at)}</span>
+                  </div>
+                  <span class="alert-status ${alert.status.toLowerCase()}">${alert.status}</span>
+                </div>
+                <p>${alert.recommendation}</p>
+                <div class="clean-metrics compact">
+                  <span>Risk <strong>${formatPercent(alert.risk_score)}</strong></span>
+                  <span>Failure <strong>${formatPercent(alert.failure_probability)}</strong></span>
+                </div>
+                <div class="workflow-actions">
+                  <button type="button" data-alert="${alert.id}" data-status="Open">Open</button>
+                  <button type="button" data-alert="${alert.id}" data-status="Investigating">Investigating</button>
+                  <button type="button" data-alert="${alert.id}" data-status="Resolved">Resolved</button>
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
 
-      executionLogEl.innerHTML = devices.slice(0, 6).map(device => `
-        <div class="alert-item">
-          <h4>${device.device_id}</h4>
-          <p>${device.actions.join(" • ")}</p>
-          <p class="muted">${formatDateTime(device.timestamp)}</p>
+      executionLogEl.querySelectorAll("[data-alert]").forEach(button => {
+        button.addEventListener("click", () => {
+          setAlertStatus(button.dataset.alert, button.dataset.status);
+        });
+      });
+
+      const clearButton = document.getElementById("clearResolvedBtn");
+      if (clearButton) clearButton.addEventListener("click", clearResolvedAlerts);
+    }
+
+    function renderActions(devices) {
+      if (!devices || !devices.length) {
+        actionListEl.innerHTML = `<div class="empty-alert">No remediation actions needed right now.</div>`;
+        renderAlerts();
+        return;
+      }
+
+      actionListEl.innerHTML = `
+        <div class="incident-board">
+          ${devices.map((device, index) => `
+            <div class="incident-row ${getRiskClass(device.risk_level)}">
+              <div class="incident-priority">
+                <span>${String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div class="incident-main">
+                <div class="incident-title">
+                  <div>
+                    <span class="step-label">Priority ${index + 1}</span>
+                    <h4>${device.device_id}</h4>
+                  </div>
+                  <span class="risk-badge ${getRiskClass(device.risk_level)}">${device.risk_level}</span>
+                </div>
+                <p class="runbook-copy">${device.recommendation}</p>
+                <div class="clean-metrics">
+                  <span>Risk <strong>${formatPercent(device.risk_score)}</strong></span>
+                  <span>Failure <strong>${formatPercent(device.failure_probability)}</strong></span>
+                  <span>Anomaly <strong>${formatPercent(device.anomaly_score)}</strong></span>
+                </div>
+                <div class="command-actions">
+                  ${device.actions.map(action => `<span>${action}</span>`).join("")}
+                </div>
+              </div>
+            </div>
+          `).join("")}
         </div>
-      `).join("");
+      `;
+
+      renderAlerts(syncAlerts(devices));
     }
 
     async function loadSelfHealingData() {
@@ -187,11 +322,10 @@
 
         actionableCountEl.textContent = data.count ?? 0;
         criticalCountEl.textContent = data.critical_count ?? 0;
-        executedCountEl.textContent = data.executed_actions ?? 0;
         automationModeTextEl.textContent = data.automation_mode ?? "Ready";
 
         automationBadgeEl.textContent = data.automation_mode ?? "Ready";
-        automationBadgeEl.className = "status-badge low";
+        automationBadgeEl.className = "status-pill low";
 
         automationTimeEl.textContent = `Updated: ${formatDateTime(data.timestamp)}`;
         lastRunEl.textContent = formatDateTime(data.timestamp);

@@ -1,0 +1,143 @@
+{
+  "generated_at": "2026-10-06T10:46:34.072694",
+  "dataset": "UNSW-NB15 official train/test parquet",
+  "train_rows": 140272,
+  "validation_rows": 35069,
+  "test_rows": 82332,
+  "target": "label",
+  "excluded_columns": [
+    "attack_cat",
+    "label"
+  ],
+  "categorical_features": [
+    "proto",
+    "service",
+    "state"
+  ],
+  "numeric_feature_count": 31,
+  "feature_columns": [
+    "dur",
+    "proto",
+    "service",
+    "state",
+    "spkts",
+    "dpkts",
+    "sbytes",
+    "dbytes",
+    "rate",
+    "sload",
+    "dload",
+    "sloss",
+    "dloss",
+    "sinpkt",
+    "dinpkt",
+    "sjit",
+    "djit",
+    "swin",
+    "stcpb",
+    "dtcpb",
+    "dwin",
+    "tcprtt",
+    "synack",
+    "ackdat",
+    "smean",
+    "dmean",
+    "trans_depth",
+    "response_body_len",
+    "ct_src_dport_ltm",
+    "ct_dst_sport_ltm",
+    "is_ftp_login",
+    "ct_ftp_cmd",
+    "ct_flw_http_mthd",
+    "is_sm_ips_ports"
+  ],
+  "models": {
+    "xgboost_hist": {
+      "validation": {
+        "threshold": 0.5194,
+        "accuracy": 0.952,
+        "precision": 0.9566,
+        "recall": 0.9735,
+        "f1": 0.965,
+        "roc_auc": 0.9919,
+        "confusion_matrix": [
+          [
+            10147,
+            1053
+          ],
+          [
+            632,
+            23237
+          ]
+        ],
+        "false_positive_rate": 0.094,
+        "false_negative_rate": 0.0265
+      },
+      "test": {
+        "threshold": 0.5194,
+        "accuracy": 0.8742,
+        "precision": 0.8284,
+        "recall": 0.9731,
+        "f1": 0.8949,
+        "roc_auc": 0.9806,
+        "confusion_matrix": [
+          [
+            27860,
+            9140
+          ],
+          [
+            1220,
+            44112
+          ]
+        ],
+        "false_positive_rate": 0.247,
+        "false_negative_rate": 0.0269
+      }
+    },
+    "hist_gradient_boosting": {
+      "validation": {
+        "threshold": 0.5084,
+        "accuracy": 0.9514,
+        "precision": 0.9543,
+        "recall": 0.9752,
+        "f1": 0.9647,
+        "roc_auc": 0.9916,
+        "confusion_matrix": [
+          [
+            10086,
+            1114
+          ],
+          [
+            591,
+            23278
+          ]
+        ],
+        "false_positive_rate": 0.0995,
+        "false_negative_rate": 0.0248
+      },
+      "test": {
+        "threshold": 0.5084,
+        "accuracy": 0.868,
+        "precision": 0.8207,
+        "recall": 0.9728,
+        "f1": 0.8903,
+        "roc_auc": 0.9797,
+        "confusion_matrix": [
+          [
+            27365,
+            9635
+          ],
+          [
+            1232,
+            44100
+          ]
+        ],
+        "false_positive_rate": 0.2604,
+        "false_negative_rate": 0.0272
+      }
+    }
+  },
+  "selected_model": "xgboost_hist",
+  "selected_model_path": "models\\netobserve_xgb_pipeline.joblib",
+  "selected_threshold": 0.5194
+}

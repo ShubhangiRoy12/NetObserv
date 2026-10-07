@@ -171,8 +171,14 @@ function renderChart(result) {
           beginAtZero: true,
           max: 100,
           ticks: {
+            color: "#64748b",
             callback: (v) => v + "%"
-          }
+          },
+          grid: { color: "rgba(148, 163, 184, 0.22)" }
+        },
+        x: {
+          ticks: { color: "#64748b" },
+          grid: { color: "rgba(148, 163, 184, 0.14)" }
         }
       }
     }
@@ -214,11 +220,11 @@ async function checkHealth() {
     const data = await res.json();
 
     apiStatusBadge.textContent = data.status || "operational";
-    apiStatusBadge.className = "status-badge low";
+    apiStatusBadge.className = "status-pill low";
     apiStatusText.textContent = "Backend connected";
   } catch {
     apiStatusBadge.textContent = "offline";
-    apiStatusBadge.className = "status-badge critical";
+    apiStatusBadge.className = "status-pill critical";
     apiStatusText.textContent = "Backend not reachable";
   }
 }

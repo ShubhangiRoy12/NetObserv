@@ -7,3 +7,6 @@ xgboost
 joblib
 jinja2
 python-multipart
+fastparquet
+pytest
+httpx

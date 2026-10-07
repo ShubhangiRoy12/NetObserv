@@ -16,32 +16,32 @@
     <aside class="sidebar">
 
       <!-- ✅ LOGO ADDED (REPLACED BRAND) -->
-      <div class="logo-container">
+      <div class="brand-block">
         <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
-        <div class="logo-text">
-            <h2>NetObserv</h2>
-            <p>Network Monitor</p>
+        <div>
+          <h1>NetObserv</h1>
+          <p>AIOps command center</p>
         </div>
       </div>
 
       <!-- ✅ NAV ORDER MATCHED WITH DASHBOARD -->
       <nav class="nav">
-        <a class="nav-link" href="/">Dashboard</a>
+        <a class="nav-link" href="/static/index.html">Dashboard</a>
         <a class="nav-link" href="/static/devices.html">Devices</a>
         <a class="nav-link active" href="/static/topology.html">Topology</a>
         <a class="nav-link" href="/static/analytics.html">Analytics</a>
         <a class="nav-link" href="/static/predict.html">Prediction</a>
-        <a class="nav-link" href="/static/self-healing.html">Self-Healing</a>
+        <a class="nav-link" href="/static/self-healing.html">Supervised Healing</a>
       </nav>
 
-      <div class="sidebar-card">
-        <h3>Topology Status</h3>
-        <div id="topologyStatus" class="status-badge neutral">Loading...</div>
-        <p id="lastUpdated" class="muted">Waiting for topology data</p>
+      <div class="side-panel">
+        <p class="panel-kicker">TOPOLOGY STATUS</p>
+        <div class="side-row"><span>Graph</span><strong id="topologyStatus" class="status-pill neutral">Loading</strong></div>
+        <p id="lastUpdated" class="side-note">Waiting for topology data</p>
       </div>
 
-      <div class="sidebar-card">
-        <h3>Risk Legend</h3>
+      <div class="side-panel">
+        <p class="panel-kicker">RISK LEGEND</p>
         <div class="legend-list">
           <div class="legend-item"><span class="dot low"></span>Low</div>
           <div class="legend-item"><span class="dot medium"></span>Medium</div>
@@ -53,37 +53,38 @@
 
     <!-- ✅ REST SAME -->
     <main class="main-content">
-      <header class="topbar">
+      <header class="hero-panel topology-hero">
         <div>
-          <p class="eyebrow">Graph-Based Network Analysis</p>
-          <h2>Network Topology</h2>
+          <p class="hero-kicker">GRAPH-BASED NETWORK ANALYSIS</p>
+          <h2>Network Topology Map</h2>
+          <p>Layered view of routers, switches, and servers with live model-backed risk status.</p>
         </div>
         <button id="refreshBtn" class="btn-primary">Refresh Topology</button>
       </header>
 
       <section class="stats-grid">
-        <div class="stat-card">
-          <p class="stat-label">Total Nodes</p>
-          <h3 id="totalNodes">0</h3>
-          <span class="stat-foot">Devices in graph</span>
+        <div class="metric-card total">
+          <p>Total Nodes</p>
+          <strong id="totalNodes">0</strong>
+          <span>Devices in graph</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Total Links</p>
-          <h3 id="totalLinks">0</h3>
-          <span class="stat-foot">Network connections</span>
+        <div class="metric-card router">
+          <p>Total Links</p>
+          <strong id="totalLinks">0</strong>
+          <span>Network connections</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Critical Nodes</p>
-          <h3 id="criticalNodes">0</h3>
-          <span class="stat-foot danger-text">Immediate review needed</span>
+        <div class="metric-card critical">
+          <p>Critical Nodes</p>
+          <strong id="criticalNodes">0</strong>
+          <span>Immediate review needed</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Average Risk</p>
-          <h3 id="avgRisk">0%</h3>
-          <span class="stat-foot">Across topology</span>
+        <div class="metric-card switch">
+          <p>Average Risk</p>
+          <strong id="avgRisk">0%</strong>
+          <span>Across topology</span>
         </div>
       </section>
 

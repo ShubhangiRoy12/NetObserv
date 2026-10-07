@@ -10,49 +10,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/static/analytics.css" />
-  <link rel="icon" type="image/png" href="/static/logo.png">
+  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
 
-      <!-- ✅ LOGO ADDED -->
-      <div class="logo-container">
-        <img src="/static/logo.png" alt="NetObserv Logo" class="logo">
-        <div class="logo-text">
-            <h2>NetObserv</h2>
-            <p>Network Monitor</p>
+      <div class="brand-block">
+        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
+        <div>
+            <h1>NetObserv</h1>
+            <p>AIOps command center</p>
         </div>
       </div>
 
-      <!-- ✅ NAV ORDER FIXED -->
       <nav class="nav">
-        <a class="nav-link" href="/">Dashboard</a>
+        <a class="nav-link" href="/static/index.html">Dashboard</a>
         <a class="nav-link" href="/static/devices.html">Devices</a>
         <a class="nav-link" href="/static/topology.html">Topology</a>
         <a class="nav-link active" href="/static/analytics.html">Analytics</a>
         <a class="nav-link" href="/static/predict.html">Prediction</a>
-        <a class="nav-link" href="/static/self-healing.html">Self-Healing</a>
+        <a class="nav-link" href="/static/self-healing.html">Supervised Healing</a>
       </nav>
 
-      <div class="sidebar-card">
-        <h3>API Health</h3>
-        <div id="healthStatus" class="status-badge neutral">Checking...</div>
-        <p id="healthTime" class="muted">Waiting for backend</p>
+      <div class="side-panel">
+        <p class="panel-kicker">SYSTEM</p>
+        <div class="side-row"><span>API</span><strong id="healthStatus" class="status-pill neutral">Checking</strong></div>
+        <div class="side-row"><span>View</span><strong class="mini-value">Live analytics</strong></div>
+        <p id="healthTime" class="side-note">Waiting for backend</p>
       </div>
 
-      <div class="sidebar-card">
-        <h3>Last Refresh</h3>
-        <p id="lastUpdated" class="muted">--</p>
+      <div class="side-panel">
+        <p class="panel-kicker">LAST REFRESH</p>
+        <p id="lastUpdated" class="side-note">--</p>
       </div>
     </aside>
 
-    <!-- ✅ EVERYTHING BELOW UNTOUCHED -->
     <main class="main-content">
-      <header class="topbar">
+      <header class="hero-panel analytics-hero">
         <div>
-          <p class="eyebrow">Live Network Insights</p>
+          <p class="hero-kicker">LIVE NETWORK INSIGHTS</p>
           <h2>Analytics Overview</h2>
+          <p>Operational risk analytics from the current telemetry stream and validated model outputs.</p>
         </div>
 
         <div class="topbar-actions">
@@ -67,28 +66,28 @@
       </header>
 
       <section class="stats-grid">
-        <div class="stat-card">
-          <p class="stat-label">Average Failure Probability</p>
-          <h3 id="avgFailure">0%</h3>
-          <span class="stat-foot">From live stream</span>
+        <div class="metric-card total">
+          <p>Average Failure Probability</p>
+          <strong id="avgFailure">0%</strong>
+          <span>From live stream</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Average Anomaly Score</p>
-          <h3 id="avgAnomaly">0%</h3>
-          <span class="stat-foot">Isolation-based signal</span>
+        <div class="metric-card router">
+          <p>Average Anomaly Score</p>
+          <strong id="avgAnomaly">0%</strong>
+          <span>Isolation-based signal</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">Average Latency</p>
-          <h3 id="avgLatency">0 ms</h3>
-          <span class="stat-foot">Across all devices</span>
+        <div class="metric-card switch">
+          <p>Average Latency</p>
+          <strong id="avgLatency">0 ms</strong>
+          <span>Across all devices</span>
         </div>
 
-        <div class="stat-card">
-          <p class="stat-label">High/Critical Devices</p>
-          <h3 id="highCriticalCount">0</h3>
-          <span class="stat-foot">Needs attention</span>
+        <div class="metric-card critical">
+          <p>High/Critical Devices</p>
+          <strong id="highCriticalCount">0</strong>
+          <span>Needs attention</span>
         </div>
       </section>
 

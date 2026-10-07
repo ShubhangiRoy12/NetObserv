@@ -1,0 +1,110 @@
+{
+  "generated_at": "2026-10-06T10:38:45.036516",
+  "dataset": "UNSW-NB15 official testing parquet",
+  "dataset_path": "UNSW-NB15_Dataset\\UNSW_NB15_testing-set.parquet",
+  "sample_count": 82332,
+  "positive_label": "Attack / anomaly label = 1",
+  "features": [
+    "dur",
+    "sbytes",
+    "dbytes",
+    "sload",
+    "dload",
+    "spkts",
+    "dpkts"
+  ],
+  "models": {
+    "random_forest": {
+      "accuracy": 0.5506,
+      "precision": 0.5506,
+      "recall": 1.0,
+      "f1": 0.7102,
+      "roc_auc": 0.6527,
+      "confusion_matrix": [
+        [
+          0,
+          37000
+        ],
+        [
+          0,
+          45332
+        ]
+      ],
+      "classification_report": {
+        "Normal": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 37000.0
+        },
+        "Attack": {
+          "precision": 0.5506000097167566,
+          "recall": 1.0,
+          "f1-score": 0.710176713873919,
+          "support": 45332.0
+        },
+        "accuracy": 0.5506000097167566,
+        "macro avg": {
+          "precision": 0.2753000048583783,
+          "recall": 0.5,
+          "f1-score": 0.3550883569369595,
+          "support": 82332.0
+        },
+        "weighted avg": {
+          "precision": 0.30316037070009244,
+          "recall": 0.5506000097167566,
+          "f1-score": 0.391023305559594,
+          "support": 82332.0
+        }
+      }
+    },
+    "xgboost": {
+      "accuracy": 0.4494,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.735,
+      "confusion_matrix": [
+        [
+          37000,
+          0
+        ],
+        [
+          45332,
+          0
+        ]
+      ],
+      "classification_report": {
+        "Normal": {
+          "precision": 0.44939999028324346,
+          "recall": 1.0,
+          "f1-score": 0.6201186605436932,
+          "support": 37000.0
+        },
+        "Attack": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 45332.0
+        },
+        "accuracy": 0.44939999028324346,
+        "macro avg": {
+          "precision": 0.22469999514162173,
+          "recall": 0.5,
+          "f1-score": 0.3100593302718466,
+          "support": 82332.0
+        },
+        "weighted avg": {
+          "precision": 0.2019603512665793,
+          "recall": 0.44939999028324346,
+          "f1-score": 0.2786813200227937,
+          "support": 82332.0
+        }
+      }
+    },
+    "isolation_forest": {
+      "detected_anomalies": 82332,
+      "detected_anomaly_rate": 1.0
+    }
+  }
+}

@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/static/predict.css" />
-  <link rel="icon" type="image/png" href="/static/logo.png">
+  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
 
   <!-- ✅ REQUIRED FOR GRAPH -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,30 +20,30 @@
 <body>
   <div class="app-shell">
 
-    <!-- ✅ SIDEBAR FIXED -->
     <aside class="sidebar">
 
-      <div class="logo-container">
-        <img src="/static/logo.png" class="logo">
-        <div class="logo-text">
-          <h2>NetObserv</h2>
-          <p>Network Monitor</p>
+      <div class="brand-block">
+        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
+        <div>
+          <h1>NetObserv</h1>
+          <p>AIOps command center</p>
         </div>
       </div>
 
       <nav class="nav">
-        <a class="nav-link" href="/">Dashboard</a>
+        <a class="nav-link" href="/static/index.html">Dashboard</a>
         <a class="nav-link" href="/static/devices.html">Devices</a>
         <a class="nav-link" href="/static/topology.html">Topology</a>
         <a class="nav-link" href="/static/analytics.html">Analytics</a>
         <a class="nav-link active" href="/static/predict.html">Prediction</a>
-        <a class="nav-link" href="/static/self-healing.html">Self-Healing</a>
+        <a class="nav-link" href="/static/self-healing.html">Supervised Healing</a>
       </nav>
 
-      <div class="sidebar-card">
-        <h3>Prediction API</h3>
-        <div id="apiStatusBadge" class="status-badge neutral">Checking...</div>
-        <p id="apiStatusText" class="muted">Waiting for backend</p>
+      <div class="side-panel">
+        <p class="panel-kicker">PREDICTION API</p>
+        <div class="side-row"><span>Status</span><strong id="apiStatusBadge" class="status-pill neutral">Checking</strong></div>
+        <div class="side-row"><span>Mode</span><strong class="mini-value">Manual test</strong></div>
+        <p id="apiStatusText" class="side-note">Waiting for backend</p>
       </div>
 
     </aside>
@@ -51,9 +51,12 @@
     <!-- ✅ MAIN -->
     <main class="main-content">
 
-      <header class="page-head">
-        <p class="eyebrow">Manual Fault Inference</p>
-        <h2>Prediction Workspace</h2>
+      <header class="hero-panel prediction-hero">
+        <div>
+          <p class="hero-kicker">MANUAL FAULT INFERENCE</p>
+          <h2>Prediction Workspace</h2>
+          <p>Submit telemetry features directly to the deployed model and inspect the risk decision.</p>
+        </div>
       </header>
 
       <!-- ✅ FIXED CLASS NAME -->
@@ -63,7 +66,7 @@
         <div class="left-column">
 
           <div class="panel">
-            <div class="section-head">
+            <div class="panel-header">
               <h3>Telemetry Input</h3>
               <p>Enter feature values and submit to the prediction model</p>
             </div>
@@ -77,67 +80,67 @@
               </div>
 
               <div class="field">
-                <label>dur</label>
+                <label>dur <span>(try 0.25, 2.8, or 7.2)</span></label>
                 <input id="dur" type="number">
               </div>
 
               <div class="field">
-                <label>sbytes</label>
+                <label>sbytes <span>(try 800, 18K, or 42K)</span></label>
                 <input id="sbytes" type="number">
               </div>
 
               <div class="field">
-                <label>dbytes</label>
+                <label>dbytes <span>(try 500, 900, or 600)</span></label>
                 <input id="dbytes" type="number">
               </div>
 
               <div class="field">
-                <label>sload</label>
+                <label>sload <span>(try 25K, 350K, or 820K)</span></label>
                 <input id="sload" type="number">
               </div>
 
               <div class="field">
-                <label>dload</label>
+                <label>dload <span>(try 12K, 21K, or 8K)</span></label>
                 <input id="dload" type="number">
               </div>
 
               <div class="field">
-                <label>spkts</label>
+                <label>spkts <span>(try 18, 190, or 460)</span></label>
                 <input id="spkts" type="number">
               </div>
 
               <div class="field">
-                <label>dpkts</label>
+                <label>dpkts <span>(try 14, 20, or 12)</span></label>
                 <input id="dpkts" type="number">
               </div>
 
               <div class="field">
-                <label>sinpkt</label>
+                <label>sinpkt <span>(try 60, 780, or 1700)</span></label>
                 <input id="sinpkt" type="number">
               </div>
 
               <div class="field">
-                <label>dinpkt</label>
+                <label>dinpkt <span>(try 42, 120, or 80)</span></label>
                 <input id="dinpkt" type="number">
               </div>
 
               <div class="field">
-                <label>sjit</label>
+                <label>sjit <span>(try 8, 210, or 620)</span></label>
                 <input id="sjit" type="number">
               </div>
 
               <div class="field">
-                <label>djit</label>
+                <label>djit <span>(try 6, 30, or 20)</span></label>
                 <input id="djit" type="number">
               </div>
 
               <div class="field">
-                <label>smean</label>
+                <label>smean <span>(try 110, 860, or 1800)</span></label>
                 <input id="smean" type="number">
               </div>
 
               <div class="field">
-                <label>dmean</label>
+                <label>dmean <span>(try 95, 120, or 90)</span></label>
                 <input id="dmean" type="number">
               </div>
 
@@ -161,7 +164,7 @@
           <!-- RESULT -->
           <div class="panel">
 
-            <div class="section-head">
+            <div class="panel-header">
               <h3>Prediction Result</h3>
               <p>Live response from model</p>
             </div>
@@ -218,7 +221,7 @@
 
           <!-- ✅ NEW GRAPH PANEL -->
           <div class="panel">
-            <div class="section-head">
+            <div class="panel-header">
               <h3>Prediction Analysis</h3>
               <p>Visual breakdown of model output</p>
             </div>
@@ -230,7 +233,7 @@
 
           <!-- RECOMMENDATION -->
           <div class="panel">
-            <div class="section-head">
+            <div class="panel-header">
               <h3>Recommendation</h3>
             </div>
 

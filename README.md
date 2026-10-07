@@ -1,239 +1,169 @@
-# 🚀 NetObserv — AI-Driven Network Fault Prediction & Self-Healing System
+# NetObserve - AI Network Fault Prediction and AIOps Console
 
-NetObserv is an advanced AI-powered network monitoring and fault prediction platform designed to intelligently analyze network behavior, predict failures before they happen, detect anomalies in real time, and recommend automated remediation actions.
+NetObserve is a local FastAPI-based AIOps prototype for network fault prediction, risk scoring, topology monitoring, analytics, and supervised self-healing recommendations.
 
-Built with a futuristic enterprise dashboard experience, NetObserv combines AI/ML, real-time analytics, topology intelligence, predictive monitoring, and self-healing automation into one integrated platform.
+The project uses the UNSW-NB15 network dataset to train and evaluate ML models, then serves a dashboard that simulates live network telemetry across routers, switches, and servers.
 
----
+## What Is Implemented
 
-# ✨ Features
+- FastAPI backend with REST endpoints for health, stream telemetry, prediction, model metrics, topology data, and supervised remediation actions.
+- XGBoost-based binary risk classifier trained on the official UNSW-NB15 train/test parquet split.
+- Model comparison between XGBoost histogram classifier and HistGradientBoostingClassifier.
+- Simulated live telemetry stream sampled from dataset-backed traffic rows.
+- Risk scoring that combines model failure probability and anomaly signal.
+- Dashboard with live metrics, topology view, analytics, manual prediction, devices page, and remediation recommendations.
+- Supervised self-healing recommendation layer that converts high/critical risk into actions such as failover, reroute, isolate, inspect logs, reduce load, and restart device.
+- Browser-persisted alert workflow using `localStorage` with `Open`, `Investigating`, and `Resolved` statuses.
 
-## 📊 Intelligent Dashboard
+## Model Performance
 
-* Real-time network monitoring
-* Live device analytics
-* Risk distribution analysis
-* Packet loss monitoring
-* Failure probability visualization
-* AI-generated anomaly insights
+Final selected model: `xgboost_hist`
 
-## 🌐 Network Topology Visualization
+For a short presentation flow, see [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md).
 
-* Interactive graph-based topology map
-* Node relationship visualization
-* Risk-level highlighting
-* Critical hotspot detection
-* Dynamic topology refresh
+Evaluation dataset: official UNSW-NB15 test set with 82,332 rows.
 
-## 🧠 AI-Powered Fault Prediction
+| Metric | Value |
+|---|---:|
+| Accuracy | 87.42% |
+| Precision | 82.84% |
+| Recall | 97.31% |
+| F1-score | 89.49% |
+| ROC-AUC | 98.06% |
+| False negative rate | 2.69% |
 
-* Machine Learning-based failure prediction
-* Risk score analysis
-* Anomaly detection engine
-* Predictive network diagnostics
-* XGBoost-powered inference pipeline
+Why these metrics matter:
 
-## 📈 Advanced Analytics
+- F1-score is useful because it balances precision and recall.
+- Recall is important because missed risky traffic is expensive in security/network operations.
+- ROC-AUC shows the model separates risky and normal traffic well across thresholds.
+- False negative rate is highlighted because missed attacks/faults are more dangerous than extra alerts.
 
-* Device risk analytics
-* Failure probability comparison
-* Latency vs packet loss analysis
-* Real-time telemetry visualization
-* Critical device insights
+## Architecture
 
-## 🤖 Self-Healing Recommendations
+```text
+UNSW-NB15 parquet dataset
+        |
+        v
+Training pipeline
+  - preprocessing
+  - model comparison
+  - threshold selection
+  - metrics export
+        |
+        v
+Saved XGBoost pipeline
+        |
+        v
+FastAPI backend
+  - /health
+  - /stream
+  - /predict
+  - /model-metrics
+  - /topology-data
+  - /self-healing-data
+        |
+        v
+Static operations console
+  - dashboard
+  - devices
+  - topology
+  - analytics
+  - prediction
+  - supervised self-healing
+```
 
-* Automated remediation suggestions
-* Intelligent recovery actions
-* Traffic rerouting recommendations
-* Device isolation guidance
-* Failure mitigation workflows
+## Main Pages
 
-## 📡 Device Management
+### Dashboard
 
-* Network inventory system
-* Device categorization
-* Real-time status monitoring
-* API-connected infrastructure tracking
+Shows device count, critical devices, average risk, packet loss, model proof cards, risk distribution, failure probability, anomaly signals, topology pulse, and action queue.
 
----
+### Devices
 
-# 🧠 AI/ML Concepts Used
+Live inventory table showing device type, risk level, failure probability, latency, packet loss, and recommended action.
 
-* Predictive Analytics
-* Network Anomaly Detection
-* Fault Prediction Models
-* AI-Based Risk Scoring
-* Self-Healing AI Systems
-* Graph-Based Network Analysis
-* Telemetry Intelligence
-* Failure Probability Estimation
-* Real-Time Monitoring Systems
-* Enterprise AIOps Concepts
+### Topology
 
----
+Graph-style topology map with live risk-colored routers, switches, servers, central backbone node, animated packet-flow dots, selected node details, and high-risk device list.
 
-# 🛠️ Tech Stack
+### Analytics
 
-## Frontend
+Live analytical view with risk distribution, failure probability ranking, latency versus packet loss, anomaly/risk/bandwidth comparison, AI insights, and top risky devices.
 
-* React.js
-* TailwindCSS
-* JavaScript
-* Chart.js / Recharts
-* Responsive Dashboard UI
+### Prediction
 
-## Backend
+Manual inference workspace where telemetry features can be entered and submitted to `/predict`. Shows risk score, failure probability, XGBoost probability, anomaly score, anomaly flag, chart breakdown, and recommendation.
 
-* Python
-* Flask / FastAPI
-* REST APIs
+### Supervised Self-Healing
 
-## AI/ML
+Human-in-the-loop remediation console that turns model output into a prioritized runbook with metrics and action tags. It recommends actions but does not directly change real network devices. High/critical alerts are tracked in browser storage with `Open`, `Investigating`, and `Resolved` statuses.
 
-* Scikit-learn
-* XGBoost
-* Pandas
-* NumPy
+## Tech Stack
 
-## Visualization
+- Python
+- FastAPI
+- scikit-learn
+- XGBoost
+- pandas
+- NumPy
+- Chart.js
+- HTML, CSS, JavaScript
+- UNSW-NB15 dataset
 
-* Interactive Network Graphs
-* Analytical Dashboards
-* Risk Heatmaps
-* Real-Time Charts
+## How To Run
 
----
+Install dependencies:
 
-# 📷 Platform Modules
+```bash
+pip install -r requirements.txt
+```
 
-## 🖥 Dashboard Overview
+Start the app:
 
-Central monitoring dashboard showing:
+```bash
+uvicorn app:app --reload --port 8000
+```
 
-* total devices
-* average risk
-* packet loss
-* anomaly trends
-* critical network insights
+Open:
 
----
+```text
+http://127.0.0.1:8000/static/index.html
+```
 
-## 🌐 Network Topology
+## Useful API Checks
 
-Interactive topology visualization with:
+```text
+GET  /health
+GET  /model-metrics
+GET  /stream
+GET  /topology-data
+GET  /self-healing-data
+POST /predict
+```
 
-* graph-based device mapping
-* critical node analysis
-* connection intelligence
-* network risk representation
+## Run Tests
 
----
+Use Python 3.10 for the local ML environment:
 
-## 📈 Analytics Engine
+```bash
+py -3.10 -m pytest -q
+```
 
-Advanced analytics system displaying:
+The tests cover health, stream telemetry, prediction, model metrics, and supervised self-healing data.
 
-* latency analysis
-* packet loss comparison
-* failure probability trends
-* device anomaly scoring
+## Honest Limitations
 
----
+- The telemetry stream is simulated from dataset-backed samples, not live packet capture.
+- Supervised self-healing is recommendation-based and does not execute real network changes.
+- Alert history is stored in browser `localStorage`, not a shared database.
+- There is no authentication/authorization layer yet.
+- The project is a local prototype, not a deployed production monitoring system.
 
-## 🔮 Prediction Workspace
+## Strong Resume Bullet
 
-AI-powered prediction interface allowing:
+Built NetObserve, a FastAPI-based AIOps network monitoring prototype using UNSW-NB15 telemetry, XGBoost risk classification, anomaly scoring, simulated live streams, model metrics endpoints, topology visualization, browser-persisted alert workflows, and supervised self-healing recommendations; achieved 87.4% accuracy, 89.5% F1-score, 97.3% recall, and 98.1% ROC-AUC on the official 82K-row test split.
 
-* telemetry input
-* live ML inference
-* anomaly probability estimation
-* device risk evaluation
+## Interview Explanation
 
----
-
-## ⚡ Self-Healing System
-
-Automated remediation recommendation engine:
-
-* fault isolation
-* rerouting strategies
-* restart recommendations
-* AI-generated recovery workflows
-
----
-
-# 🎯 Project Vision
-
-Modern enterprise networks generate massive telemetry streams and operational complexity.
-
-NetObserv aims to transform traditional reactive monitoring into:
-
-> proactive, predictive, and intelligent network operations.
-
-The platform demonstrates how AI can improve:
-
-* infrastructure reliability
-* operational efficiency
-* incident response
-* network resilience
-* automated recovery systems
-
----
-
-# 🔥 Highlights
-
-* Futuristic enterprise dashboard UI
-* AI-powered predictive monitoring
-* Interactive topology visualization
-* Real-time analytics
-* Self-healing automation concepts
-* Production-inspired AIOps architecture
-* Modern dark-glass UI system
-
----
-
-# 🚀 Future Improvements
-
-* Real-time streaming telemetry
-* Live packet capture integration
-* Kubernetes monitoring
-* Cloud infrastructure integration
-* LLM-powered network assistant
-* Multi-agent remediation system
-* Real-time alerting engine
-* Threat intelligence integration
-* Distributed monitoring architecture
-
----
-
-# 📌 Status
-
-✅ Frontend Completed
-✅ Dashboard Modules Completed
-✅ Prediction Workspace Integrated
-✅ Self-Healing Workflow Designed
-🚧 Advanced AI Pipeline Expansion Ongoing
-
----
-
-# 👩‍💻 Developed By
-
-### Shubhangi Roy
-
-AI Developer • GenAI Systems Builder • Design-Oriented Creative Technologist
-
-Focused on:
-
-* AI Systems
-* Intelligent Interfaces
-* Enterprise AI
-* Computer Vision
-* Predictive Analytics
-* Futuristic Product Experiences
-
----
-
-# ⭐ If you like this project
-
-Give it a star ⭐ and connect for collaborations, AI projects, and futuristic system development.
+NetObserve predicts whether network traffic is risky using an XGBoost model trained on UNSW-NB15. I exposed the model through FastAPI, simulated live telemetry for network devices, and built a command-center UI for monitoring risk, topology, analytics, manual prediction, and supervised remediation recommendations. The project is honest about its limits: it is a prototype with simulated streaming and human-in-the-loop self-healing, but the model evaluation and metrics are reproducible.
