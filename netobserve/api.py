@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -17,6 +18,20 @@ app = FastAPI(
     title="AI Network Fault Prediction API",
     description="AI-powered network observability and supervised self-healing platform",
     version="4.0.0"
+)
+
+# Exact origins only; set the assigned Static Site URL in Render.
+CORS_ORIGINS = [origin.strip().rstrip("/") for origin in os.getenv(
+    "CORS_ALLOWED_ORIGINS", "http://localhost:5500,http://127.0.0.1:5500"
+).split(",") if origin.strip()]
+if "*" in CORS_ORIGINS:
+    raise ValueError("CORS_ALLOWED_ORIGINS must contain explicit origins")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=CORS_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 os.makedirs(STATIC_DIR, exist_ok=True)
@@ -54,37 +69,37 @@ def root():
 
 @app.get("/login", response_class=HTMLResponse)
 def login_page():
-    return render_page("login.html")
+    return RedirectResponse(url="/static/login.html")
 
 
 @app.get("/signup", response_class=HTMLResponse)
 def signup_page():
-    return render_page("signup.html")
+    return RedirectResponse(url="/static/signup.html")
 
 
 @app.get("/predict-page", response_class=HTMLResponse)
 def predict_page():
-    return render_page("predict.html")
+    return RedirectResponse(url="/static/predict.html")
 
 
 @app.get("/devices-page", response_class=HTMLResponse)
 def devices_page():
-    return render_page("devices.html")
+    return RedirectResponse(url="/static/devices.html")
 
 
 @app.get("/analytics-page", response_class=HTMLResponse)
 def analytics_page():
-    return render_page("analytics.html")
+    return RedirectResponse(url="/static/analytics.html")
 
 
 @app.get("/self-healing", response_class=HTMLResponse)
 def self_healing_page():
-    return render_page("self-healing.html")
+    return RedirectResponse(url="/static/self-healing.html")
 
 
 @app.get("/topology-page", response_class=HTMLResponse)
 def topology_page():
-    return render_page("topology.html")
+    return RedirectResponse(url="/static/topology.html")
 
 
 @app.get("/health")

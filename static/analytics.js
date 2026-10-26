@@ -1,4 +1,4 @@
-const API_BASE = "";
+const API_BASE = window.NETOBSERVE_CONFIG.apiBaseUrl;
 
 const healthStatusEl = document.getElementById("healthStatus");
 const healthTimeEl = document.getElementById("healthTime");
@@ -348,7 +348,7 @@ function renderCharts(devices) {
 
 async function fetchHealth() {
   try {
-    const res = await fetch(`${API_BASE}/health`);
+    const res = await NetObserveAPI.fetch(`${API_BASE}/health`);
     const data = await res.json();
 
     healthStatusEl.textContent = data.status;
@@ -363,7 +363,7 @@ async function fetchHealth() {
 
 async function fetchAnalytics() {
   try {
-    const res = await fetch(`${API_BASE}/stream`);
+    const res = await NetObserveAPI.fetch(`${API_BASE}/stream`);
     const data = await res.json();
 
     latestDevices = data.devices || [];

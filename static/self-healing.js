@@ -133,7 +133,7 @@ function renderHealing(devices) {
 
 async function loadHealingData() {
   try {
-    const res = await fetch("/stream");
+    const res = await NetObserveAPI.fetch("/stream");
     const data = await res.json();
     const devices = data.devices || [];
 

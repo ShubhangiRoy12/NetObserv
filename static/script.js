@@ -1,4 +1,4 @@
-const API_BASE = "";
+const API_BASE = window.NETOBSERVE_CONFIG.apiBaseUrl;
 
 const tableBody = document.getElementById("deviceTableBody");
 const alertList = document.getElementById("alertList");
@@ -155,7 +155,7 @@ function initCharts() {
 
 async function fetchHealth() {
   try {
-    const res = await fetch(`${API_BASE}/health`);
+    const res = await NetObserveAPI.fetch(`${API_BASE}/health`);
     const data = await res.json();
 
     healthStatusEl.textContent = data.status || "operational";
@@ -270,7 +270,7 @@ function updateCharts(devices) {
 
 async function fetchMetrics() {
   try {
-    const res = await fetch(`${API_BASE}/model-metrics`);
+    const res = await NetObserveAPI.fetch(`${API_BASE}/model-metrics`);
     const data = await res.json();
     metricAccuracyEl.textContent = formatPercent(data.accuracy);
     metricF1El.textContent = formatPercent(data.f1);
@@ -285,7 +285,7 @@ async function fetchMetrics() {
 }
 async function fetchStream() {
   try {
-    const res = await fetch(`${API_BASE}/stream`);
+    const res = await NetObserveAPI.fetch(`${API_BASE}/stream`);
     const data = await res.json();
     const devices = data.devices || [];
     renderTable(devices);

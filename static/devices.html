@@ -7,24 +7,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/devices.css" />
-  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
+  <link rel="stylesheet" href="./devices.css" />
+  <link rel="icon" type="image/png" href="./NetObserv Monitor Logo.png">
+<script src="./config.js"></script>
+<script src="./api-client.js"></script>
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand-block">
-        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv" class="brand-logo">
+        <img src="./NetObserv Monitor Logo.png" alt="NetObserv" class="brand-logo">
         <div><h1>NetObserv</h1><p>AIOps command center</p></div>
       </div>
 
       <nav class="nav" aria-label="Primary navigation">
-        <a class="nav-link" href="/static/index.html">Dashboard</a>
-        <a class="nav-link active" href="/static/devices.html">Devices</a>
-        <a class="nav-link" href="/static/topology.html">Topology</a>
-        <a class="nav-link" href="/static/analytics.html">Analytics</a>
-        <a class="nav-link" href="/static/predict.html">Prediction</a>
-        <a class="nav-link" href="/static/self-healing.html">Supervised Healing</a>
+        <a class="nav-link" href="./index.html">Dashboard</a>
+        <a class="nav-link active" href="./devices.html">Devices</a>
+        <a class="nav-link" href="./topology.html">Topology</a>
+        <a class="nav-link" href="./analytics.html">Analytics</a>
+        <a class="nav-link" href="./predict.html">Prediction</a>
+        <a class="nav-link" href="./self-healing.html">Supervised Healing</a>
       </nav>
 
       <div class="side-section system-card">
@@ -49,10 +51,10 @@
       </section>
 
       <section class="summary-grid">
-        <article class="metric-card total"><p>Total Devices</p><strong id="totalDevices">0</strong><span>Current stream</span></article>
-        <article class="metric-card router"><p>Routers</p><strong id="routerCount">0</strong><span>Core routing layer</span></article>
-        <article class="metric-card switch"><p>Switches</p><strong id="switchCount">0</strong><span>Access/distribution</span></article>
-        <article class="metric-card server"><p>Servers</p><strong id="serverCount">0</strong><span>Service endpoints</span></article>
+        <article class="metric-card total"><p>Total Devices</p><strong id="totalDevices">--</strong><span>Current stream</span></article>
+        <article class="metric-card router"><p>Routers</p><strong id="routerCount">--</strong><span>Core routing layer</span></article>
+        <article class="metric-card switch"><p>Switches</p><strong id="switchCount">--</strong><span>Access/distribution</span></article>
+        <article class="metric-card server"><p>Servers</p><strong id="serverCount">--</strong><span>Service endpoints</span></article>
       </section>
 
       <section class="devices-layout">
@@ -71,9 +73,9 @@
         <article class="panel">
           <div class="panel-header"><div><h3>Device Mix</h3><p>Current inventory split</p></div></div>
           <div class="summary-list">
-            <div><span>Router Devices</span><strong id="routerCountSide">0</strong></div>
-            <div><span>Switch Devices</span><strong id="switchCountSide">0</strong></div>
-            <div><span>Server Devices</span><strong id="serverCountSide">0</strong></div>
+            <div><span>Router Devices</span><strong id="routerCountSide">--</strong></div>
+            <div><span>Switch Devices</span><strong id="switchCountSide">--</strong></div>
+            <div><span>Server Devices</span><strong id="serverCountSide">--</strong></div>
           </div>
         </article>
 
@@ -85,6 +87,6 @@
     </main>
   </div>
 
-  <script src="/static/devices.js"></script>
+  <script src="./devices.js"></script>
 </body>
 </html>

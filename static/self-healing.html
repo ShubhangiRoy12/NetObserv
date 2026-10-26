@@ -10,8 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/static/self-healing.css" />
-  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
+  <link rel="stylesheet" href="./self-healing.css" />
+  <link rel="icon" type="image/png" href="./NetObserv Monitor Logo.png">
+<script src="./config.js"></script>
+<script src="./api-client.js"></script>
 </head>
 
 <body>
@@ -20,7 +22,7 @@
     <aside class="sidebar">
 
       <div class="brand-block">
-        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
+        <img src="./NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
         <div>
           <h1>NetObserv</h1>
           <p>AIOps command center</p>
@@ -28,12 +30,12 @@
       </div>
 
       <nav class="nav">
-        <a class="nav-link" href="/static/index.html">Dashboard</a>
-        <a class="nav-link" href="/static/devices.html">Devices</a>
-        <a class="nav-link" href="/static/topology.html">Topology</a>
-        <a class="nav-link" href="/static/analytics.html">Analytics</a>
-        <a class="nav-link" href="/static/predict.html">Prediction</a>
-        <a class="nav-link active" href="/static/self-healing.html">Supervised Healing</a>
+        <a class="nav-link" href="./index.html">Dashboard</a>
+        <a class="nav-link" href="./devices.html">Devices</a>
+        <a class="nav-link" href="./topology.html">Topology</a>
+        <a class="nav-link" href="./analytics.html">Analytics</a>
+        <a class="nav-link" href="./predict.html">Prediction</a>
+        <a class="nav-link active" href="./self-healing.html">Supervised Healing</a>
       </nav>
 
       <div class="side-panel">
@@ -64,19 +66,19 @@
       <section class="stats-grid">
         <div class="metric-card total">
           <p>Actionable Devices</p>
-          <strong id="actionableCount">0</strong>
+          <strong id="actionableCount">--</strong>
           <span>High and critical risk devices</span>
         </div>
 
         <div class="metric-card critical">
           <p>Critical Cases</p>
-          <strong id="criticalCount">0</strong>
+          <strong id="criticalCount">--</strong>
           <span>Immediate attention</span>
         </div>
 
         <div class="metric-card router">
           <p>Tracked Alerts</p>
-          <strong id="executedCount">0</strong>
+          <strong id="executedCount">--</strong>
           <span>Saved in browser storage</span>
         </div>
 
@@ -315,7 +317,7 @@
 
     async function loadSelfHealingData() {
       try {
-        const res = await fetch("/self-healing-data");
+        const res = await NetObserveAPI.fetch("/self-healing-data");
         if (!res.ok) throw new Error("Failed");
 
         const data = await res.json();

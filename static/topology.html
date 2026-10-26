@@ -8,8 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/topology.css" />
-  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
+  <link rel="stylesheet" href="./topology.css" />
+  <link rel="icon" type="image/png" href="./NetObserv Monitor Logo.png">
+<script src="./config.js"></script>
+<script src="./api-client.js"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -17,7 +19,7 @@
 
       <!-- ✅ LOGO ADDED (REPLACED BRAND) -->
       <div class="brand-block">
-        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
+        <img src="./NetObserv Monitor Logo.png" alt="NetObserv Logo" class="logo">
         <div>
           <h1>NetObserv</h1>
           <p>AIOps command center</p>
@@ -26,12 +28,12 @@
 
       <!-- ✅ NAV ORDER MATCHED WITH DASHBOARD -->
       <nav class="nav">
-        <a class="nav-link" href="/static/index.html">Dashboard</a>
-        <a class="nav-link" href="/static/devices.html">Devices</a>
-        <a class="nav-link active" href="/static/topology.html">Topology</a>
-        <a class="nav-link" href="/static/analytics.html">Analytics</a>
-        <a class="nav-link" href="/static/predict.html">Prediction</a>
-        <a class="nav-link" href="/static/self-healing.html">Supervised Healing</a>
+        <a class="nav-link" href="./index.html">Dashboard</a>
+        <a class="nav-link" href="./devices.html">Devices</a>
+        <a class="nav-link active" href="./topology.html">Topology</a>
+        <a class="nav-link" href="./analytics.html">Analytics</a>
+        <a class="nav-link" href="./predict.html">Prediction</a>
+        <a class="nav-link" href="./self-healing.html">Supervised Healing</a>
       </nav>
 
       <div class="side-panel">
@@ -65,25 +67,25 @@
       <section class="stats-grid">
         <div class="metric-card total">
           <p>Total Nodes</p>
-          <strong id="totalNodes">0</strong>
+          <strong id="totalNodes">--</strong>
           <span>Devices in graph</span>
         </div>
 
         <div class="metric-card router">
           <p>Total Links</p>
-          <strong id="totalLinks">0</strong>
+          <strong id="totalLinks">--</strong>
           <span>Network connections</span>
         </div>
 
         <div class="metric-card critical">
           <p>Critical Nodes</p>
-          <strong id="criticalNodes">0</strong>
+          <strong id="criticalNodes">--</strong>
           <span>Immediate review needed</span>
         </div>
 
         <div class="metric-card switch">
           <p>Average Risk</p>
-          <strong id="avgRisk">0%</strong>
+          <strong id="avgRisk">--</strong>
           <span>Across topology</span>
         </div>
       </section>
@@ -128,7 +130,7 @@
     </main>
   </div>
 
-  <script src="/static/topology.js"></script>
+  <script src="./topology.js"></script>
 </body>
 
 </html>

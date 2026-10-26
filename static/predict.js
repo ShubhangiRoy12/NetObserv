@@ -216,7 +216,7 @@ function updateUI(result) {
 
 async function checkHealth() {
   try {
-    const res = await fetch("/health");
+    const res = await NetObserveAPI.fetch("/health");
     const data = await res.json();
 
     apiStatusBadge.textContent = data.status || "operational";
@@ -235,7 +235,7 @@ async function runPrediction(payload) {
     btn.textContent = "Running...";
     btn.disabled = true;
 
-    const res = await fetch("/predict", {
+    const res = await NetObserveAPI.fetch("/predict", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)

@@ -234,7 +234,7 @@ function renderTopology(data) {
 
 async function loadTopology() {
   try {
-    const res = await fetch("/topology-data");
+    const res = await NetObserveAPI.fetch("/topology-data");
     const data = await res.json();
     renderTopology(data);
   } catch (error) {

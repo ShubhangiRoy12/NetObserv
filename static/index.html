@@ -7,14 +7,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/styles.css" />
-  <link rel="icon" type="image/png" href="/static/NetObserv Monitor Logo.png">
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/png" href="./NetObserv Monitor Logo.png">
+<script src="./config.js"></script>
+<script src="./api-client.js"></script>
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand-block">
-        <img src="/static/NetObserv Monitor Logo.png" alt="NetObserv" class="brand-logo">
+        <img src="./NetObserv Monitor Logo.png" alt="NetObserv" class="brand-logo">
         <div>
           <h1>NetObserv</h1>
           <p>AIOps command center</p>
@@ -22,12 +24,12 @@
       </div>
 
       <nav class="nav" aria-label="Primary navigation">
-        <a class="nav-link active" href="/static/index.html">Dashboard</a>
-        <a class="nav-link" href="/static/devices.html">Devices</a>
-        <a class="nav-link" href="/static/topology.html">Topology</a>
-        <a class="nav-link" href="/static/analytics.html">Analytics</a>
-        <a class="nav-link" href="/static/predict.html">Prediction</a>
-        <a class="nav-link" href="/static/self-healing.html">Supervised Healing</a>
+        <a class="nav-link active" href="./index.html">Dashboard</a>
+        <a class="nav-link" href="./devices.html">Devices</a>
+        <a class="nav-link" href="./topology.html">Topology</a>
+        <a class="nav-link" href="./analytics.html">Analytics</a>
+        <a class="nav-link" href="./predict.html">Prediction</a>
+        <a class="nav-link" href="./self-healing.html">Supervised Healing</a>
       </nav>
 
       <div class="side-section system-card">
@@ -71,10 +73,10 @@
         </div>
       </section>
 <section class="summary-grid" aria-label="Network summary">
-        <article class="metric-card total"><p>Total Devices</p><strong id="totalDevices">0</strong><span>Streaming inventory</span></article>
-        <article class="metric-card critical-card"><p>Critical Devices</p><strong id="criticalDevices">0</strong><span>Immediate action queue</span></article>
-        <article class="metric-card risk"><p>Average Risk</p><strong id="avgRisk">0%</strong><span>Across current stream</span></article>
-        <article class="metric-card loss"><p>Packet Loss</p><strong id="avgPacketLoss">0%</strong><span>Average observed loss</span></article>
+        <article class="metric-card total"><p>Total Devices</p><strong id="totalDevices">--</strong><span>Streaming inventory</span></article>
+        <article class="metric-card critical-card"><p>Critical Devices</p><strong id="criticalDevices">--</strong><span>Immediate action queue</span></article>
+        <article class="metric-card risk"><p>Average Risk</p><strong id="avgRisk">--</strong><span>Across current stream</span></article>
+        <article class="metric-card loss"><p>Packet Loss</p><strong id="avgPacketLoss">--</strong><span>Average observed loss</span></article>
       </section>
 
       <section class="ops-grid">
@@ -82,10 +84,10 @@
           <div class="panel-header"><div><h3>Severity Mix</h3><p>Current devices by risk level</p></div></div>
           <div class="chart-box donut-box"><canvas id="riskChart"></canvas></div>
           <div class="risk-breakdown">
-            <div><span class="dot low-dot"></span><span>Low</span><strong id="lowCount">0</strong></div>
-            <div><span class="dot medium-dot"></span><span>Medium</span><strong id="mediumCount">0</strong></div>
-            <div><span class="dot high-dot"></span><span>High</span><strong id="highCount">0</strong></div>
-            <div><span class="dot critical-dot"></span><span>Critical</span><strong id="criticalCount">0</strong></div>
+            <div><span class="dot low-dot"></span><span>Low</span><strong id="lowCount">--</strong></div>
+            <div><span class="dot medium-dot"></span><span>Medium</span><strong id="mediumCount">--</strong></div>
+            <div><span class="dot high-dot"></span><span>High</span><strong id="highCount">--</strong></div>
+            <div><span class="dot critical-dot"></span><span>Critical</span><strong id="criticalCount">--</strong></div>
           </div>
         </article>
 
@@ -132,7 +134,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="/static/script.js"></script>
+  <script src="./script.js"></script>
 </body>
 </html>
 
