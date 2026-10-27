@@ -10,7 +10,7 @@ function context(handler) {
     URL, AbortController, console,
     location: {origin:'https://ui.example', reload(){}},
     window:{NETOBSERVE_CONFIG:{apiBaseUrl:'https://netobserv.onrender.com'}},
-    document:{body:{prepend(){}},createElement(){const e={style:{},setAttribute(){},append(){}};elements.push(e);return e;}},
+    document:{body:{prepend(){}},querySelector(){return {append(){}};},createElement(){const e={style:{},setAttribute(){},append(){}};elements.push(e);return e;}},
     setTimeout(fn, ms){ timers.push(ms); if(ms < 20000) queueMicrotask(fn); return 0; }, clearTimeout(){},
     fetch: async (...args)=>{calls++;return handler(...args);}
   });

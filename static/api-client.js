@@ -22,12 +22,14 @@
   }
   function renderState() {
     if (!document.body) return;
-    if (!disclosure) {
+    const sidebar = document.querySelector(".sidebar");
+    if (!disclosure && sidebar) {
       disclosure = document.createElement("small");
       disclosure.id = "telemetry-disclosure";
-      disclosure.textContent = "Simulated telemetry from dataset samples";
-      disclosure.style.cssText = "display:block;padding:6px 18px;background:#f1f5f9;color:#475569;font:12px system-ui;";
-      document.body.prepend(disclosure);
+      disclosure.textContent = "Simulated telemetry";
+      disclosure.title = "Telemetry is generated from dataset samples.";
+      disclosure.style.cssText = "display:block;margin:18px 12px 0;color:#a8bdd8;font:12px system-ui;";
+      sidebar.append(disclosure);
     }
     const snapshot = getState();
     for (const listener of listeners) {
