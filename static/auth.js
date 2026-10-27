@@ -10,6 +10,7 @@
   function message(text, kind = "info") {
     el("authMessage").textContent = text;
     el("authMessage").dataset.kind = kind;
+    el("authMessage").hidden = !text;
   }
   function newCheck() {
     const values = crypto.getRandomValues(new Uint8Array(2));
@@ -30,7 +31,7 @@
     el("password").autocomplete = register ? "new-password" : "current-password";
     el("signInTab").setAttribute("aria-pressed", String(!register));
     el("registerTab").setAttribute("aria-pressed", String(register));
-    message("Profiles are saved only in this browser. Use a demo password you do not use elsewhere.");
+    message("");
     if (!challenge) newCheck();
   }
   function showSession(profile) {
@@ -39,7 +40,7 @@
     document.querySelector(".auth-tabs").hidden = true;
     el("authTitle").textContent = "Your workspace";
     el("sessionEmail").textContent = profile.email;
-    message("Your browser profile is ready.", "success");
+    message("");
   }
   function initialize() {
     try {

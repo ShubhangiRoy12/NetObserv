@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In | NetObserv</title>
 
-    <link rel="stylesheet" href="./auth.css?v=20261027e">
+    <link rel="stylesheet" href="./auth.css?v=20261027f">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -73,16 +73,14 @@
                     <input id="password" name="password" type="password" autocomplete="current-password" required minlength="12" maxlength="128">
                 </div>
                 <div class="input-group">
-                    <label for="checkAnswer">Local demo check <span id="checkQuestion"></span>
+                    <label for="checkAnswer">Local check <span id="checkQuestion"></span>
                         <button id="refreshCheck" type="button" class="text-button" aria-label="Get a new check">Refresh</button>
                     </label>
                     <input id="checkAnswer" name="check" type="text" inputmode="numeric" autocomplete="off" required aria-describedby="localAccountNote">
                 </div>
                 <button id="authSubmit" type="submit" class="btn-primary" disabled>Sign in</button>
-                <p id="localAccountNote" class="session-note">Browser-only demo profile. Not server authentication or anti-bot protection.</p>
-                <p class="session-note">Stay signed in for 7 days on this browser. Use Sign out on shared devices.</p>
             </form>
-            <div class="demo-access"><span>Take a look around</span><a href="./dashboard.html">Explore Demo</a></div>
+            <div class="demo-access"><span id="localAccountNote" title="Saved on this browser only. Does not secure the public backend.">Browser-only profile</span><a href="./dashboard.html">Explore Demo</a></div>
             <noscript><p class="session-note">Sign-in requires JavaScript. Explore Demo is still available.</p></noscript>
 
 
@@ -95,6 +93,6 @@
 
 
 <script src="./local-profiles.js?v=20261027e"></script>
-<script src="./auth.js?v=20261027e"></script>
+<script src="./auth.js?v=20261027f"></script>
 </body>
 </html>

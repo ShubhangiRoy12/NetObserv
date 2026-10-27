@@ -29,7 +29,8 @@ def test_homepage_has_browser_profiles_and_plain_demo_link():
     assert 'id="accountForm"' in entrance
     assert 'local-profiles.js' in entrance
     assert 'Explore Demo' in entrance
-    assert 'Not server authentication or anti-bot protection.' in entrance
+    assert 'Browser-only profile' in entrance
+    assert '7 days' not in entrance
     assert 'id="deviceTableBody"' not in entrance
     for filename in ('dashboard.html', 'devices.html', 'analytics.html', 'predict.html', 'topology.html', 'self-healing.html'):
         text = (STATIC / filename).read_text(encoding='utf-8')
