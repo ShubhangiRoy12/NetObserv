@@ -44,6 +44,34 @@ const response = (data,status=200)=>new Response(JSON.stringify(data),{status,he
   ]);
   assert.equal(predictions.calls(),2);
   const banner = ctx => ctx.elements.find(e => e.id === 'api-connection-status');
+  // Health and telemetry success must not mask pending metrics initialization.
+  const finish = new Map();
+  const dashboard=context(url => new Promise(resolve => finish.set(url.pathname,resolve)));
+  dashboard.api.requireEndpoints(['/health','/model-metrics','/stream']);
+  let sidebarState;
+  dashboard.api.subscribe(({state})=>{sidebarState=state;});
+  const healthRequest=dashboard.api.fetch('/health');
+  const metricsRequest=dashboard.api.fetch('/model-metrics');
+  const streamRequest=dashboard.api.fetch('/stream');
+  await Promise.resolve();
+  finish.get('/health')(response({status:'operational'}));
+  finish.get('/stream')(response({devices:[]}));
+  await Promise.all([healthRequest,streamRequest]);
+  assert.equal(sidebarState,'connecting');
+  assert.equal(banner(dashboard).style.display,'flex');
+  finish.get('/model-metrics')(response({accuracy:0.87}));
+  await metricsRequest;
+  assert.equal(sidebarState,'connected');
+  assert.equal(banner(dashboard).style.display,'none');
+  // A slow healthy refresh stays connected regardless of how long it is pending.
+  const slowRefresh=dashboard.api.fetch('/stream');
+  await Promise.resolve();
+  assert.equal(dashboard.api.getState().pending,1);
+  assert.equal(sidebarState,'connected');
+  assert.equal(banner(dashboard).style.display,'none');
+  finish.get('/stream')(response({devices:[]}));
+  await slowRefresh;
+  assert.equal(banner(dashboard).style.display,'none');
   let finishHealth, finishStream;
   const lifecycle=context(url => new Promise(resolve => {
     if(url.pathname === '/health') finishHealth=resolve;
