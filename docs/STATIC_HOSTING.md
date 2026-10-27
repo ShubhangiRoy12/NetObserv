@@ -45,6 +45,17 @@ the same endpoint share the in-flight request. Prediction POSTs are not replayed
 A visible status banner explains waking, failure, stale values and manual retry.
 No fallback telemetry is fabricated. The server's simulated stream is preserved.
 
+The dashboard initializes with GET /health, /model-metrics and /stream. Its sidebar
+and banner share the client's connecting, connected, degraded and unavailable
+states. Normal pending refreshes do not change a connected state. A failed request
+shows its endpoint and error, including during retry; a successful health request
+does not clear an error from another endpoint. The simulation disclosure is separate.
+Dashboard polling starts five seconds after each batch completes, avoiding overlapping
+refreshes when inference takes more than five seconds. Local script URLs carry a
+release query version; bump it with client changes to bypass stale script caches.
+
+Run frontend state regressions with node tests/check_api_client.cjs.
+
 There is no real authentication in this repository. The previous browser flag
 did not verify identity or protect the API. The entrance is now explicitly a
 public demo with no credential collection or fake registration success. CORS is

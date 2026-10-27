@@ -20,6 +20,12 @@ const metricF1El = document.getElementById("metricF1");
 const metricRocEl = document.getElementById("metricRoc");
 const metricFnrEl = document.getElementById("metricFnr");
 
+NetObserveAPI.requireEndpoints(["/health", "/model-metrics", "/stream"]);
+NetObserveAPI.subscribe(({state}) => {
+  healthStatusEl.textContent = state;
+  healthStatusEl.className = `status-pill ${{connected: "low", connecting: "neutral", degraded: "medium", unavailable: "critical"}[state]}`;
+});
+
 let riskChart;
 let failureChart;
 let anomalyChart;
@@ -154,12 +160,8 @@ async function fetchHealth() {
     const res = await NetObserveAPI.fetch(`${API_BASE}/health`);
     const data = await res.json();
 
-    healthStatusEl.textContent = data.status || "operational";
-    healthStatusEl.className = "status-pill low";
     healthTimeEl.textContent = `Updated ${formatDateTime(data.timestamp)}`;
   } catch (error) {
-    healthStatusEl.textContent = "offline";
-    healthStatusEl.className = "status-pill critical";
     healthTimeEl.textContent = "Backend not reachable";
   }
 }
@@ -289,14 +291,22 @@ async function fetchStream() {
   }
 }
 
-async function loadDashboard() {
-  await Promise.all([fetchHealth(), fetchMetrics(), fetchStream()]);
+let dashboardRequest;
+let dashboardTimer;
+function loadDashboard() {
+  if (dashboardRequest) return dashboardRequest;
+  clearTimeout(dashboardTimer);
+  dashboardRequest = Promise.all([fetchHealth(), fetchMetrics(), fetchStream()])
+    .finally(() => {
+      dashboardRequest = null;
+      dashboardTimer = setTimeout(loadDashboard, 5000);
+    });
+  return dashboardRequest;
 }
 
 refreshBtn.addEventListener("click", loadDashboard);
 initCharts();
 loadDashboard();
-setInterval(loadDashboard, 5000);
 
 window.addEventListener("resize", () => {
   clearTimeout(window.__chartResizeTimer);

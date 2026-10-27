@@ -2,13 +2,19 @@
 (() => {
   const pending = new Map();
   const failures = new Map();
+  const succeeded = new Set();
+  const required = new Set();
+  const listeners = new Set();
   let initialized = false;
-  let loadingTimer;
-  let slowRequest = false;
   let disclosure;
   let banner;
   let message;
   let retry;
+  function getState() {
+    const state = failures.size ? (succeeded.size ? "degraded" : "unavailable")
+      : initialized ? "connected" : "connecting";
+    return {state, pending: pending.size, failures: [...failures.values()]};
+  }
   function renderState() {
     if (!document.body) return;
     if (!disclosure) {
@@ -18,10 +24,14 @@
       disclosure.style.cssText = "display:block;padding:6px 18px;background:#f1f5f9;color:#475569;font:12px system-ui;";
       document.body.prepend(disclosure);
     }
+    const snapshot = getState();
+    for (const listener of listeners) {
+      try { listener(snapshot); } catch (error) { console.error(error); }
+    }
     if (failures.size) {
       const endpoints = [...failures.values()].join(", ");
       ui(`Unable to load ${endpoints}. Other API requests may still work. Displayed values may be stale. Check your connection or retry.`, true);
-    } else if (pending.size && (!initialized || slowRequest)) {
+    } else if (pending.size && !initialized) {
       ui("Connecting to backend. Render may need a minute to wake up.");
     } else if (banner) {
       banner.style.display = "none";
@@ -50,6 +60,7 @@
     const base = window.NETOBSERVE_CONFIG.apiBaseUrl.replace(/\/$/, "");
     const url = new URL(path, base || location.origin);
     const endpoint = `${options.method || "GET"} ${url.pathname}`;
+    if (!initialized && !required.size) required.add(endpoint);
     const key = (options.method || "GET") === "GET"
       ? `GET ${url}` : Symbol("request");
     if (pending.has(key)) return (await pending.get(key)).clone();
@@ -71,39 +82,39 @@
           if (url.pathname === "/self-healing-data" && !Array.isArray(data.devices)) throw new Error("Invalid remediation response");
           if (url.pathname === "/predict" && (typeof data.risk_score !== "number" || !data.risk_level)) throw new Error("Invalid prediction response");
           failures.delete(endpoint);
+          succeeded.add(endpoint);
+          if ([...required].every(item => succeeded.has(item))) initialized = true;
           return response;
         } catch (error) {
           // POST prediction is never replayed automatically.
           if (attempt === 3 || (options.method || "GET") !== "GET" || error.retryable === false) {
-            failures.set(endpoint, endpoint);
+            failures.set(endpoint, `${endpoint}: ${error.message}`);
             throw error;
           }
-          slowRequest = true;
+          failures.set(endpoint, `${endpoint}: ${error.message}. Retrying (${attempt + 1}/3)`);
           renderState();
           await new Promise(resolve => setTimeout(resolve, 2000 * (attempt + 1)));
         } finally { clearTimeout(timeout); }
       }
     });
-    const wasIdle = pending.size === 0;
     pending.set(key, operation);
-    if (wasIdle) {
-      slowRequest = false;
-      loadingTimer = setTimeout(() => {
-        slowRequest = true;
-        renderState();
-      }, 700);
-    }
     renderState();
     try { return (await operation).clone(); }
     finally {
       pending.delete(key);
-      if (!pending.size) {
-        clearTimeout(loadingTimer);
-        slowRequest = false;
-        if (!failures.size) initialized = true;
-      }
       renderState();
     }
   }
-  window.NetObserveAPI = {fetch: request};
+  window.NetObserveAPI = {
+    fetch: request,
+    getState,
+    requireEndpoints(paths) {
+      for (const path of paths) required.add(`GET ${new URL(path, location.origin).pathname}`);
+    },
+    subscribe(listener) {
+      listeners.add(listener);
+      listener(getState());
+      return () => listeners.delete(listener);
+    }
+  };
 })();
