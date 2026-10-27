@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Console | NetObserv</title>
+    <title>Sign In | NetObserv</title>
 
-    <link rel="stylesheet" href="./auth.css?v=20261027d">
+    <link rel="stylesheet" href="./auth.css?v=20261027e">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -47,10 +47,43 @@
 
         <div class="auth-card">
 
-            <h2>Demo Console</h2>
-            <p class="sub">Public demo access. No account or credentials required.</p>
-
-            <a href="./dashboard.html" class="btn-primary">Open Dashboard</a>
+            <h2 id="authTitle">Sign in</h2>
+            <p id="authSubtitle" class="sub">Your network operations workspace.</p>
+            <div class="auth-tabs" role="group" aria-label="Account access">
+                <button id="signInTab" type="button" aria-pressed="true">Sign in</button>
+                <button id="registerTab" type="button" aria-pressed="false">Create account</button>
+            </div>
+            <p id="authMessage" class="auth-message" role="status" aria-live="polite">Loading browser profile...</p>
+            <div id="sessionPanel" hidden>
+                <p id="sessionEmail" class="session-email"></p>
+                <a href="./dashboard.html" class="btn-primary">Continue to Dashboard</a>
+                <button id="signOutButton" class="text-button" type="button">Sign out</button>
+            </div>
+            <form id="accountForm">
+                <div id="nameField" class="input-group" hidden>
+                    <label for="fullName">Full name</label>
+                    <input id="fullName" name="name" type="text" autocomplete="name" maxlength="100">
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" autocomplete="username" required maxlength="254">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required minlength="12" maxlength="128">
+                </div>
+                <div class="input-group">
+                    <label for="checkAnswer">Local demo check <span id="checkQuestion"></span>
+                        <button id="refreshCheck" type="button" class="text-button" aria-label="Get a new check">Refresh</button>
+                    </label>
+                    <input id="checkAnswer" name="check" type="text" inputmode="numeric" autocomplete="off" required aria-describedby="localAccountNote">
+                </div>
+                <button id="authSubmit" type="submit" class="btn-primary" disabled>Sign in</button>
+                <p id="localAccountNote" class="session-note">Browser-only demo profile. Not server authentication or anti-bot protection.</p>
+                <p class="session-note">Stay signed in for 7 days on this browser. Use Sign out on shared devices.</p>
+            </form>
+            <div class="demo-access"><span>Take a look around</span><a href="./dashboard.html">Explore Demo</a></div>
+            <noscript><p class="session-note">Sign-in requires JavaScript. Explore Demo is still available.</p></noscript>
 
 
 
@@ -61,5 +94,7 @@
 </div>
 
 
+<script src="./local-profiles.js?v=20261027e"></script>
+<script src="./auth.js?v=20261027e"></script>
 </body>
 </html>

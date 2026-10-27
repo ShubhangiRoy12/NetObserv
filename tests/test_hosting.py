@@ -13,7 +13,7 @@ STATIC = Path(__file__).resolve().parents[1] / 'static'
 def test_static_local_links_and_assets_exist():
     for page in STATIC.glob('*.html'):
         text = page.read_text(encoding='utf-8')
-        if page.name not in ('index.html', 'login.html'):
+        if page.name not in ('index.html', 'login.html', 'signup.html'):
             assert './config.js' in text and './api-client.js' in text
         assert '/static/' not in text
         for target in re.findall(r'(?:src|href)="([^"]+)"', text):
@@ -22,12 +22,14 @@ def test_static_local_links_and_assets_exist():
             assert (STATIC / unquote(target.split('?')[0])).is_file(), (page, target)
 
 
-def test_homepage_is_demo_entrance_with_plain_dashboard_link():
+def test_homepage_has_browser_profiles_and_plain_demo_link():
     entrance = (STATIC / 'index.html').read_text(encoding='utf-8')
-    assert 'Demo Console' in entrance
+    assert 'Sign in' in entrance
     assert 'href="./dashboard.html"' in entrance
-    assert '<form' not in entrance
-    assert 'auth.js' not in entrance
+    assert 'id="accountForm"' in entrance
+    assert 'local-profiles.js' in entrance
+    assert 'Explore Demo' in entrance
+    assert 'Not server authentication or anti-bot protection.' in entrance
     assert 'id="deviceTableBody"' not in entrance
     for filename in ('dashboard.html', 'devices.html', 'analytics.html', 'predict.html', 'topology.html', 'self-healing.html'):
         text = (STATIC / filename).read_text(encoding='utf-8')
@@ -54,7 +56,7 @@ def test_cors_preflight_explicit_origin(monkeypatch):
         assert 'access-control-allow-origin' not in denied.headers
         assert client.get('/login', follow_redirects=False).headers['location'] == '/static/index.html'
         assert client.get('/static/login.html').status_code == 200
-        assert 'Demo Console' in client.get('/').text
+        assert 'id="accountForm"' in client.get('/').text
         assert 'href="./dashboard.html"' in client.get('/static/index.html').text
         assert 'id="deviceTableBody"' in client.get('/static/dashboard.html').text
     finally:

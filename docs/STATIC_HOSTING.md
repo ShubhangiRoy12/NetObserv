@@ -3,8 +3,8 @@
 The frontend is plain HTML, CSS and JavaScript. FastAPI previously returned the
 HTML files directly; there is no Jinja template processing. The audited static
 folder now uses relative local assets and page links, and a shared API client.
-Its index.html is the Demo Console entrance. dashboard.html contains the dashboard.
-Open Dashboard is a plain link and works without JavaScript or authentication.
+Its index.html is the browser-profile entrance. dashboard.html contains the dashboard.
+Explore Demo is a plain link and works without JavaScript or authentication.
 login.html is a small compatibility redirect to the entrance for old bookmarks.
 
 ## Render Static Site settings
@@ -65,11 +65,19 @@ The transport uses no-store so recovery requires actual API responses. Local scr
 release query version; bump it with client changes to bypass stale script caches.
 
 Run frontend state regressions with node tests/check_api_client.cjs.
+Run browser-profile storage regressions with node tests/check_local_profiles.cjs.
 
-There is no real authentication in this repository. The previous browser flag
-did not verify identity or protect the API. The entrance is now explicitly a
-public demo with no credential collection or fake registration success. CORS is
-not authentication; add server-verified identity before handling private data.
+The entrance supports browser-only demo profiles stored in localStorage. Passwords
+are hashed with Web Crypto PBKDF2-HMAC-SHA256, 600,000 iterations and a random
+16-byte salt. Plaintext passwords are not stored or sent to a server. Users should
+use demo passwords, not passwords used elsewhere. Sessions last seven days and
+returning sessions skip the local arithmetic check. That check is a UI demo, not
+verified CAPTCHA or bot protection. There is no email verification or password
+recovery. Profiles do not synchronize across devices or browser origins and are
+lost when site storage is cleared. Other people with browser/storage access can
+alter these profiles or sessions; this is not backend authorization. The dashboard
+and FastAPI demo endpoints remain public. No external account service is integrated.
+Real private data would need server-verified auth. CORS is not authentication.
 Browser alert history remains specific to each browser origin and does not
 automatically transfer from the old site to the new site.
 
