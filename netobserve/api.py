@@ -64,12 +64,12 @@ def render_page(filename: str):
 
 @app.get("/")
 def root():
-    return RedirectResponse(url="/login")
+    return RedirectResponse(url="/static/index.html")
 
 
 @app.get("/login", response_class=HTMLResponse)
 def login_page():
-    return RedirectResponse(url="/static/login.html")
+    return RedirectResponse(url="/static/index.html")
 
 
 @app.get("/signup", response_class=HTMLResponse)

@@ -209,6 +209,13 @@ body{
     transition:transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
+.auth-card a.btn-primary{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+}
+
 .btn-primary:hover{
     transform:translateY(-2px);
     filter:saturate(1.08);

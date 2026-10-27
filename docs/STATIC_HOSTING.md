@@ -3,7 +3,9 @@
 The frontend is plain HTML, CSS and JavaScript. FastAPI previously returned the
 HTML files directly; there is no Jinja template processing. The audited static
 folder now uses relative local assets and page links, and a shared API client.
-Its index.html is the dashboard. login.html is an optional public demo entrance.
+Its index.html is the Demo Console entrance. dashboard.html contains the dashboard.
+Open Dashboard is a plain link and works without JavaScript or authentication.
+login.html is a small compatibility redirect to the entrance for old bookmarks.
 
 ## Render Static Site settings
 
@@ -13,10 +15,10 @@ Connect the same repository and branch as the backend. Enter:
 - Build Command: echo "Static frontend ready"
 - Publish Directory: .
 
-No npm install or frontend compilation is needed. All eight HTML pages are
-served as files. Do not add an SPA rewrite. Open /login.html for the demo entrance.
+No npm install or frontend compilation is needed. HTML pages are
+served as files. Do not add an SPA rewrite. Open / for the demo entrance.
 Old /static/... bookmarks belong to the backend; static-site navigation uses
-/index.html, /predict.html, /topology.html and the other .html page paths.
+/dashboard.html, /predict.html, /topology.html and the other .html page paths.
 
 ## Backend setup
 

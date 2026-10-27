@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetObserv Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/png" href="./NetObserv Monitor Logo.png">
+<script src="./config.js?v=20261027c"></script>
+<script src="./api-client.js?v=20261027c"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <img src="./NetObserv Monitor Logo.png" alt="NetObserv" class="brand-logo">
+        <div>
+          <h1>NetObserv</h1>
+          <p>AIOps command center</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="nav-link active" href="./dashboard.html">Dashboard</a>
+        <a class="nav-link" href="./devices.html">Devices</a>
+        <a class="nav-link" href="./topology.html">Topology</a>
+        <a class="nav-link" href="./analytics.html">Analytics</a>
+        <a class="nav-link" href="./predict.html">Prediction</a>
+        <a class="nav-link" href="./self-healing.html">Supervised Healing</a>
+      </nav>
+
+      <div class="side-section system-card">
+        <p class="section-label">System Status</p>
+        <div class="side-row"><span>API</span><strong id="healthStatus" class="status-pill neutral">Checking</strong></div>
+        <p id="healthTime" class="side-note">Waiting for backend</p>
+      </div>
+
+      <div class="side-section">
+        <p class="section-label">Last Sync</p>
+        <p id="lastUpdated" class="timestamp">--</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Network Operations</p>
+          <h2>Network Overview</h2>
+          <p>Device health, risk signals and priority actions.</p>
+          <p id="dataFreshness" role="status">Waiting for telemetry</p>
+        </div>
+        <div class="hero-metrics">
+          <button id="refreshBtn" class="btn-primary">Refresh</button>
+        </div>
+      </section>
+
+            <section class="proof-panel" aria-label="Model evaluation metrics">
+        <div>
+          <p class="section-kicker">Model Performance</p>
+          <h3>UNSW-NB15 held-out test set</h3>
+        </div>
+        <div id="metricProofGrid" class="proof-grid">
+          <div><span>Accuracy</span><strong id="metricAccuracy">--</strong></div>
+          <div><span>F1 Score</span><strong id="metricF1">--</strong></div>
+          <div><span>ROC-AUC</span><strong id="metricRoc">--</strong></div>
+          <div><span>False Negative Rate</span><strong id="metricFnr">--</strong></div>
+        </div>
+      </section>
+<section class="summary-grid" aria-label="Network summary">
+        <article class="metric-card total"><p>Total Devices</p><strong id="totalDevices">--</strong><span>Streaming inventory</span></article>
+        <article class="metric-card critical-card"><p>Critical Devices</p><strong id="criticalDevices">--</strong><span>Immediate action queue</span></article>
+        <article class="metric-card risk"><p>Average Risk</p><strong id="avgRisk">--</strong><span>Across current stream</span></article>
+        <article class="metric-card loss"><p>Packet Loss</p><strong id="avgPacketLoss">--</strong><span>Average observed loss</span></article>
+      </section>
+
+      <section class="ops-grid">
+        <article class="panel risk-panel">
+          <div class="panel-header"><div><h3>Severity Mix</h3><p>Current devices by risk level</p></div></div>
+          <div class="chart-box donut-box"><canvas id="riskChart"></canvas></div>
+          <div class="risk-breakdown">
+            <div><span class="dot low-dot"></span><span>Low</span><strong id="lowCount">--</strong></div>
+            <div><span class="dot medium-dot"></span><span>Medium</span><strong id="mediumCount">--</strong></div>
+            <div><span class="dot high-dot"></span><span>High</span><strong id="highCount">--</strong></div>
+            <div><span class="dot critical-dot"></span><span>Critical</span><strong id="criticalCount">--</strong></div>
+          </div>
+        </article>
+
+        <article class="panel failure-panel">
+          <div class="panel-header"><div><h3>Failure Probability</h3><p>Highest model scores right now</p></div></div>
+          <div class="chart-box"><canvas id="failureChart"></canvas></div>
+        </article>
+
+
+        <article class="panel alerts-panel">
+          <div class="panel-header"><div><h3>Action Queue</h3><p>Prioritized remediation guidance</p></div></div>
+          <div id="alertList" class="alert-list"><div class="empty-alert">No alerts yet.</div></div>
+        </article>
+
+
+        <article class="panel topology-panel">
+          <div class="panel-header"><div><h3>Network Topology Pulse</h3><p>Compact device health map from current stream</p></div></div>
+          <div id="topologyStrip" class="topology-strip"></div>
+        </article>
+        <article class="panel anomaly-panel">
+          <div class="panel-header"><div><h3>Anomaly Signals</h3><p>Highest anomaly scores</p></div></div>
+          <div class="chart-box slim-chart"><canvas id="anomalyChart"></canvas></div>
+        </article>
+
+        <article class="panel table-panel">
+          <div class="panel-header"><div><h3>Live Device Status</h3><p>Auto-refreshes every 5 seconds</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Device</th><th>Risk</th><th>Score</th><th>Failure</th><th>Anomaly</th><th>Latency</th><th>Loss</th><th>Bandwidth</th></tr></thead>
+              <tbody id="deviceTableBody"><tr><td colspan="8" class="empty-cell">Loading device data...</td></tr></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./script.js?v=20261027c"></script>
+</body>
+</html>

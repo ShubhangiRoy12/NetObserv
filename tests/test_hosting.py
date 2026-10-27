@@ -13,12 +13,25 @@ STATIC = Path(__file__).resolve().parents[1] / 'static'
 def test_static_local_links_and_assets_exist():
     for page in STATIC.glob('*.html'):
         text = page.read_text(encoding='utf-8')
-        assert './config.js' in text and './api-client.js' in text
+        if page.name not in ('index.html', 'login.html'):
+            assert './config.js' in text and './api-client.js' in text
         assert '/static/' not in text
         for target in re.findall(r'(?:src|href)="([^"]+)"', text):
             if target.startswith(('https:', 'http:', '#')):
                 continue
             assert (STATIC / unquote(target.split('?')[0])).is_file(), (page, target)
+
+
+def test_homepage_is_demo_entrance_with_plain_dashboard_link():
+    entrance = (STATIC / 'index.html').read_text(encoding='utf-8')
+    assert 'Demo Console' in entrance
+    assert 'href="./dashboard.html"' in entrance
+    assert '<form' not in entrance
+    assert 'auth.js' not in entrance
+    assert 'id="deviceTableBody"' not in entrance
+    for filename in ('dashboard.html', 'devices.html', 'analytics.html', 'predict.html', 'topology.html', 'self-healing.html'):
+        text = (STATIC / filename).read_text(encoding='utf-8')
+        assert re.search(r'href="\./dashboard.html">Dashboard</a>', text)
 
 
 def test_cors_preflight_explicit_origin(monkeypatch):
@@ -39,8 +52,11 @@ def test_cors_preflight_explicit_origin(monkeypatch):
         })
         assert denied.status_code == 400
         assert 'access-control-allow-origin' not in denied.headers
-        assert client.get('/login', follow_redirects=False).headers['location'] == '/static/login.html'
+        assert client.get('/login', follow_redirects=False).headers['location'] == '/static/index.html'
         assert client.get('/static/login.html').status_code == 200
+        assert 'Demo Console' in client.get('/').text
+        assert 'href="./dashboard.html"' in client.get('/static/index.html').text
+        assert 'id="deviceTableBody"' in client.get('/static/dashboard.html').text
     finally:
         monkeypatch.delenv('CORS_ALLOWED_ORIGINS', raising=False)
         importlib.reload(api)
