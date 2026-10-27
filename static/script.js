@@ -15,10 +15,6 @@ const healthStatusEl = document.getElementById("healthStatus");
 const healthTimeEl = document.getElementById("healthTime");
 const lastUpdatedEl = document.getElementById("lastUpdated");
 const refreshBtn = document.getElementById("refreshBtn");
-const inferenceModeEl = document.getElementById("inferenceMode");
-const selectedModelEl = document.getElementById("selectedModel");
-const decisionThresholdEl = document.getElementById("decisionThreshold");
-const heroModelEl = document.getElementById("heroModel");
 const metricAccuracyEl = document.getElementById("metricAccuracy");
 const metricF1El = document.getElementById("metricF1");
 const metricRocEl = document.getElementById("metricRoc");
@@ -161,17 +157,10 @@ async function fetchHealth() {
     healthStatusEl.textContent = data.status || "operational";
     healthStatusEl.className = "status-pill low";
     healthTimeEl.textContent = `Updated ${formatDateTime(data.timestamp)}`;
-    inferenceModeEl.textContent = readableMode(data.inference_mode);
-    selectedModelEl.textContent = data.selected_model || "--";
-    heroModelEl.textContent = data.selected_model || "--";
-    decisionThresholdEl.textContent = data.decision_threshold ? formatPercent(data.decision_threshold) : "--";
   } catch (error) {
     healthStatusEl.textContent = "offline";
     healthStatusEl.className = "status-pill critical";
     healthTimeEl.textContent = "Backend not reachable";
-    inferenceModeEl.textContent = "--";
-    selectedModelEl.textContent = "--";
-    decisionThresholdEl.textContent = "--";
   }
 }
 
