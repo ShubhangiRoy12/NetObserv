@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
   <link rel="icon" type="image/png" href="./NetObserv Monitor Logo.png">
-<script src="./config.js?v=20261027b"></script>
-<script src="./api-client.js?v=20261027b"></script>
+<script src="./config.js?v=20261027c"></script>
+<script src="./api-client.js?v=20261027c"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -50,6 +50,7 @@
           <p class="eyebrow">Network Operations</p>
           <h2>Network Overview</h2>
           <p>Device health, risk signals and priority actions.</p>
+          <p id="dataFreshness" role="status">Waiting for telemetry</p>
         </div>
         <div class="hero-metrics">
           <button id="refreshBtn" class="btn-primary">Refresh</button>
@@ -122,7 +123,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="./script.js?v=20261027b"></script>
+  <script src="./script.js?v=20261027c"></script>
 </body>
 </html>
 

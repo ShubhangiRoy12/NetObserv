@@ -24,7 +24,7 @@ const response = (data,status=200)=>new Response(JSON.stringify(data),{status,he
   const wakeStates=[];
   wake.api.subscribe(({state})=>wakeStates.push(state));
   await wake.api.fetch('/stream');assert.equal(wake.calls(),3);
-  assert(wakeStates.includes('unavailable'));
+  assert(wakeStates.includes('reconnecting'));
   assert.equal(wake.api.getState().state,'connected');
   const denied=context(async()=>response({},422));
   await assert.rejects(denied.api.fetch('/predict',{method:'POST'}));assert.equal(denied.calls(),1);
@@ -118,6 +118,22 @@ const response = (data,status=200)=>new Response(JSON.stringify(data),{status,he
   badPrediction=false;
   await postRecovery.api.fetch('/predict',{method:'POST'});
   assert.equal(banner(postRecovery).style.display,'none');
+  // Recover from temporary network failure without navigation or fake success.
+  let networkDown=false;
+  const network=context(async()=>{
+    if(networkDown) throw new TypeError('Failed to fetch');
+    return response({devices:[]});
+  });
+  await network.api.fetch('/stream');
+  networkDown=true;
+  await assert.rejects(network.api.fetch('/stream'));
+  assert.equal(network.api.getState().state,'unavailable');
+  assert.equal(banner(network).style.display,'flex');
+  networkDown=false;
+  await network.api.retryFailed();
+  assert.equal(network.api.getState().state,'connected');
+  assert.equal(banner(network).style.display,'none');
+  assert.equal(network.calls(),6);
   for(const name of fs.readdirSync(root).filter(x=>x.endsWith('.js'))) new vm.Script(fs.readFileSync(root+name,'utf8'),{filename:name});
   console.log('PASS: URL routing, wake-up retries, HTTP failures, retry exhaustion, invalid prediction, deduplication, JS syntax');
 })();

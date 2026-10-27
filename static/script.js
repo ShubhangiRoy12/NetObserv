@@ -21,10 +21,22 @@ const metricRocEl = document.getElementById("metricRoc");
 const metricFnrEl = document.getElementById("metricFnr");
 
 NetObserveAPI.requireEndpoints(["/health", "/model-metrics", "/stream"]);
+let lastStreamReceived = 0;
+let lastStreamTimestamp = "";
+function updateFreshness() {
+  const label = document.getElementById("dataFreshness");
+  if (!lastStreamReceived) { label.textContent = "Waiting for telemetry"; return; }
+  const failed = NetObserveAPI.getState().failures.some(error => error.startsWith("GET /stream:"));
+  const stale = failed || Date.now() - lastStreamReceived > 30000;
+  label.textContent = `${stale ? "Stale data" : "Last telemetry received"}: ${formatDateTime(lastStreamTimestamp)}`;
+  label.style.color = stale ? "#b45309" : "#64748b";
+}
 NetObserveAPI.subscribe(({state}) => {
-  healthStatusEl.textContent = state;
-  healthStatusEl.className = `status-pill ${{connected: "low", connecting: "neutral", degraded: "medium", unavailable: "critical"}[state]}`;
+  healthStatusEl.textContent = state === "unavailable" ? "Temporarily unavailable" : state;
+  healthStatusEl.className = `status-pill ${{connected: "low", connecting: "neutral", reconnecting: "medium", degraded: "medium", unavailable: "critical"}[state]}`;
+  updateFreshness();
 });
+setInterval(updateFreshness, 5000);
 
 let riskChart;
 let failureChart;
@@ -155,12 +167,16 @@ function initCharts() {
   });
 }
 
-async function fetchHealth() {
+let lastHealthSuccess = 0;
+let lastMetricsSuccess = 0;
+async function fetchHealth(force = false) {
+  if (!force && Date.now() - lastHealthSuccess < 30000 && !NetObserveAPI.getState().failures.some(error => error.startsWith("GET /health:"))) return;
   try {
     const res = await NetObserveAPI.fetch(`${API_BASE}/health`);
     const data = await res.json();
 
     healthTimeEl.textContent = `Updated ${formatDateTime(data.timestamp)}`;
+    lastHealthSuccess = Date.now();
   } catch (error) {
     healthTimeEl.textContent = "Backend not reachable";
   }
@@ -259,7 +275,8 @@ function updateCharts(devices) {
 }
 
 
-async function fetchMetrics() {
+async function fetchMetrics(force = false) {
+  if (!force && Date.now() - lastMetricsSuccess < 300000 && !NetObserveAPI.getState().failures.some(error => error.startsWith("GET /model-metrics:"))) return;
   try {
     const res = await NetObserveAPI.fetch(`${API_BASE}/model-metrics`);
     const data = await res.json();
@@ -267,6 +284,7 @@ async function fetchMetrics() {
     metricF1El.textContent = formatPercent(data.f1);
     metricRocEl.textContent = formatPercent(data.roc_auc);
     metricFnrEl.textContent = formatPercent(data.false_negative_rate);
+    lastMetricsSuccess = Date.now();
   } catch (error) {
     metricAccuracyEl.textContent = "--";
     metricF1El.textContent = "--";
@@ -284,27 +302,35 @@ async function fetchStream() {
     updateStats(devices);
     updateCharts(devices);
     lastUpdatedEl.textContent = formatDateTime(data.timestamp);
+    lastStreamReceived = Date.now();
+    lastStreamTimestamp = data.timestamp;
+    updateFreshness();
   } catch (error) {
-    tableBody.innerHTML = `<tr><td colspan="8" class="empty-cell">Failed to load stream data.</td></tr>`;
-    alertList.innerHTML = `<div class="empty-alert">Could not fetch alerts.</div>`;
-    lastUpdatedEl.textContent = "Refresh failed";
+    if (!lastStreamReceived) {
+      tableBody.innerHTML = `<tr><td colspan="8" class="empty-cell">Unable to load telemetry. Retrying automatically.</td></tr>`;
+      alertList.innerHTML = `<div class="empty-alert">Unable to load alerts.</div>`;
+    }
+    updateFreshness();
   }
 }
 
 let dashboardRequest;
 let dashboardTimer;
-function loadDashboard() {
+let failedBatches = 0;
+function loadDashboard(force = false) {
   if (dashboardRequest) return dashboardRequest;
   clearTimeout(dashboardTimer);
-  dashboardRequest = Promise.all([fetchHealth(), fetchMetrics(), fetchStream()])
+  dashboardRequest = Promise.all([fetchHealth(force), fetchMetrics(force), fetchStream()])
     .finally(() => {
       dashboardRequest = null;
-      dashboardTimer = setTimeout(loadDashboard, 5000);
+      failedBatches = NetObserveAPI.getState().failures.length ? failedBatches + 1 : 0;
+      const delay = failedBatches ? Math.min(60000, 5000 * 2 ** Math.min(failedBatches, 4)) : 5000;
+      dashboardTimer = setTimeout(loadDashboard, delay);
     });
   return dashboardRequest;
 }
 
-refreshBtn.addEventListener("click", loadDashboard);
+refreshBtn.addEventListener("click", () => loadDashboard(true));
 initCharts();
 loadDashboard();
 

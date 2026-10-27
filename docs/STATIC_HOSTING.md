@@ -46,12 +46,20 @@ A visible status banner explains waking, failure, stale values and manual retry.
 No fallback telemetry is fabricated. The server's simulated stream is preserved.
 
 The dashboard initializes with GET /health, /model-metrics and /stream. Its sidebar
-and banner share the client's connecting, connected, degraded and unavailable
-states. Normal pending refreshes do not change a connected state. A failed request
+and banner share the client's connecting, connected, reconnecting, degraded and unavailable
+states. Unavailable is displayed as temporarily unavailable. Normal pending refreshes do not change a connected state. A failed request
 shows its endpoint and error, including during retry; a successful health request
 does not clear an error from another endpoint. The simulation disclosure is separate.
-Dashboard polling starts five seconds after each batch completes, avoiding overlapping
-refreshes when inference takes more than five seconds. Local script URLs carry a
+Dashboard polling starts five seconds after each healthy batch completes, avoiding overlapping
+refreshes when inference takes more than five seconds. Failed batches back off to
+10, 20, 40 and at most 60 seconds between batches. Health successes are reused for
+30 seconds and metrics for five minutes; failures are retried on the next batch.
+The Retry connection button reissues failed GETs without navigation, and returning
+online also triggers recovery. POST predictions are never replayed automatically.
+Last-received telemetry is marked stale after a stream error or 30 seconds without
+a sample; successful stream responses clear the stale indication. Network errors
+do not reveal whether CORS, connectivity, or a hosting restart caused them.
+The transport uses no-store so recovery requires actual API responses. Local script URLs carry a
 release query version; bump it with client changes to bypass stale script caches.
 
 Run frontend state regressions with node tests/check_api_client.cjs.
